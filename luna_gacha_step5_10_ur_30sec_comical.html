@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ルナ🌙ガチャ</title>
+<style>
+:root {
+  --bg:#080a18; --panel:#11152b; --text:#f7f7ff; --muted:#aeb3d5;
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { margin:0; min-height:100%; background:radial-gradient(circle at 50% 15%,#20295b 0,#0c1025 42%,#050611 100%); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; }
+body { overflow-x:hidden; }
+button { font:inherit; }
+.devTestWrap { display:flex; gap:8px; flex-wrap:wrap; justify-content:center;  text-align:center; margin:4px 0 7px; }
+.devTestBtn {
+  appearance:none; border:1px dashed rgba(255,255,255,.28);
+  background:rgba(255,255,255,.05); color:#cfd4ff;
+  border-radius:10px; padding:7px 11px; font-size:11px;
+}
+.devTestBtn:active { transform:scale(.98); background:rgba(255,255,255,.09); }
+
+#app { width:100%; max-width:760px; margin:auto; padding:7px 12px 10px; }
+.header { text-align:center; padding:3px 0 7px; }
+.versionBadge { display:inline-block; margin-bottom:4px; padding:4px 9px; border-radius:999px; font-size:10px; letter-spacing:.08em; color:#bfc6ef; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); }
+.title { font-size:26px; font-weight:800; letter-spacing:.06em; }
+.sub { color:#b9bee0; font-size:11px; margin-top:3px; }
+.status { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin:5px 0 8px; }
+.pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:6px 9px; font-size:11px; }
+.actions { display:flex; gap:7px; margin-bottom:8px; }
+.mainBtn { flex:1; border:0; border-radius:13px; padding:10px 8px; color:white; font-weight:800; background:linear-gradient(135deg,#6d5dfc,#a44cff); box-shadow:0 8px 22px rgba(92,67,255,.25); }
+.mainBtn.secondary { background:linear-gradient(135deg,#26345d,#3e4d7c); box-shadow:none; }
+.mainBtn:disabled { opacity:.45; }
+.panel { background:rgba(13,17,38,.82); border:1px solid rgba(255,255,255,.09); border-radius:22px; padding:14px; box-shadow:0 18px 50px rgba(0,0,0,.25); }
+#stage { min-height:245px; height:245px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:18px; background:radial-gradient(circle at 50% 35%,rgba(99,108,207,.2),transparent 42%); }
+.moon { position:absolute; width:125px; height:125px; border-radius:50%; background:radial-gradient(circle at 38% 34%,#fff 0,#e7eaff 42%,#aeb7ed 100%); box-shadow:0 0 60px rgba(205,214,255,.35); opacity:.15; transition:opacity .35s,transform .6s; }
+.stars { position:absolute; inset:0; background-image:radial-gradient(#fff 1px,transparent 1px); background-size:43px 43px; opacity:.13; }
+#stage.revealing #slotGrid { display:none !important; }
+
+/* --- v5.10 UR Comical Premium: 30-second long-take prototype --- */
+#comicalFx { position:absolute; inset:0; z-index:18; display:none; overflow:hidden; pointer-events:none; background:#000; isolation:isolate; }
+#comicalFx.show { display:block; }
+.comicalBlackout { position:absolute; inset:0; background:#000; z-index:30; opacity:1; }
+#comicalFx.show .comicalBlackout { animation:blackoutHold 30s linear forwards; }
+#comicalFx.instant .comicalBlackout { animation:blackoutInstant 30s linear forwards; }
+/* central crack: appears during the slow "プチュン" transition */
+.comicalCrack { position:absolute; inset:0; z-index:31; display:grid; place-items:center; opacity:0; }
+.comicalCrack svg { width:100%; height:100%; overflow:visible; }
+.comicalCrack path { fill:none; stroke:rgba(255,255,255,.96); stroke-width:1.15; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 5px rgba(255,255,255,.95)) drop-shadow(0 0 16px rgba(160,210,255,.55)); stroke-dasharray:230; stroke-dashoffset:230; }
+#comicalFx.show .comicalCrack { animation:crackFade 2.4s ease-in-out 8.0s forwards; }
+#comicalFx.show .comicalCrack path { animation:crackDraw 1.8s ease-out 8.15s forwards; }
+#comicalFx.instant .comicalCrack { animation:crackFade 2.4s ease-in-out 0.0s forwards; }
+#comicalFx.instant .comicalCrack path { animation:crackDraw 1.8s ease-out 0.15s forwards; }
+/* deep rainbow field, built slowly so the player can understand what is happening */
+.comicalRainbow { position:absolute; inset:-45%; z-index:2; opacity:0; background:
+  conic-gradient(from 12deg at 50% 50%,
+    #ff2fa4 0deg, #ff7a21 42deg, #ffe84d 78deg, #39ff8a 125deg,
+    #31dfff 170deg, #6670ff 215deg, #c94dff 265deg, #ff2fa4 315deg, #ffe84d 360deg);
+  filter:saturate(1.9) blur(2px); transform:scale(.18) rotate(-24deg); mix-blend-mode:screen; }
+#comicalFx.show .comicalRainbow { animation:rainbowBloomLong 5s cubic-bezier(.12,.78,.18,1) 16s forwards; }
+#comicalFx.instant .comicalRainbow { animation:rainbowBloomLong 5s cubic-bezier(.12,.78,.18,1) 7s forwards; }
+/* radial rays */
+.comicalRays { position:absolute; inset:-10%; z-index:3; opacity:0; background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.92) 0deg,rgba(255,255,255,.92) 1.2deg,transparent 3.2deg,transparent 12deg); filter:blur(1px); transform:scale(.08) rotate(-8deg); mix-blend-mode:screen; }
+#comicalFx.show .comicalRays { animation:raysBlastLong 5s cubic-bezier(.08,.9,.18,1) 17s forwards; }
+#comicalFx.instant .comicalRays { animation:raysBlastLong 5s cubic-bezier(.08,.9,.18,1) 8s forwards; }
+/* right-bottom rainbow "fireworks" origin */
+.comicalBurstRing { position:absolute; z-index:4; width:20px; height:20px; right:5%; bottom:8%; border-radius:50%; opacity:0; background:radial-gradient(circle,#fff 0 10%,rgba(255,255,255,.9) 12%,transparent 62%); box-shadow:0 0 18px 6px #fff,0 0 40px 14px rgba(255,70,210,.65),0 0 65px 22px rgba(60,220,255,.45); }
+#comicalFx.show .comicalBurstRing { animation:burstRing 5s cubic-bezier(.12,.8,.18,1) 16s forwards; }
+#comicalFx.instant .comicalBurstRing { animation:burstRing 5s cubic-bezier(.12,.8,.18,1) 7s forwards; }
+.comicalBurstCore { position:absolute; z-index:4; width:12px; height:12px; right:5.5%; bottom:8.5%; border-radius:50%; opacity:0; background:#fff; box-shadow:0 0 14px 4px #fff; }
+#comicalFx.show .comicalBurstCore { animation:corePulse 5s ease-out 16s forwards; }
+#comicalFx.instant .comicalBurstCore { animation:corePulse 5s ease-out 7s forwards; }
+/* layered energy bands */
+.comicalBeam { position:absolute; z-index:5; left:-70%; width:240%; height:7%; top:34%; opacity:0; transform:rotate(-11deg) translateX(-12%) scaleX(.05); background:linear-gradient(90deg,transparent 0%,#ff3bc8 10%,#fff 20%,#ffec5b 31%,#4dff9b 45%,#49e7ff 60%,#8f68ff 75%,#ff3bc8 89%,transparent 100%); filter:blur(1px) drop-shadow(0 0 8px #fff) drop-shadow(0 0 22px #ff55d7); }
+.comicalBeam.b2{top:59%;height:6%;transform:rotate(9deg) translateX(10%) scaleX(.05);filter:blur(1px) drop-shadow(0 0 8px #fff) drop-shadow(0 0 22px #57eaff);}
+.comicalBeam.b3{top:49%;height:3%;transform:rotate(-3deg) translateX(-12%) scaleX(.04);filter:blur(.5px) drop-shadow(0 0 7px #fff);}
+#comicalFx.show .comicalBeam.b1 { animation:beamSlashLong 4.2s cubic-bezier(.08,.9,.15,1) 17.1s forwards; }
+#comicalFx.show .comicalBeam.b2 { animation:beamSlashLong2 4.0s cubic-bezier(.08,.9,.15,1) 17.8s forwards; }
+#comicalFx.show .comicalBeam.b3 { animation:beamSlashLong3 3.7s cubic-bezier(.08,.9,.15,1) 18.4s forwards; }
+#comicalFx.instant .comicalBeam.b1 { animation:beamSlashLong 4.2s cubic-bezier(.08,.9,.15,1) 8.1s forwards; }
+#comicalFx.instant .comicalBeam.b2 { animation:beamSlashLong2 4.0s cubic-bezier(.08,.9,.15,1) 8.8s forwards; }
+#comicalFx.instant .comicalBeam.b3 { animation:beamSlashLong3 3.7s cubic-bezier(.08,.9,.15,1) 9.4s forwards; }
+/* star particles */
+.comicalSpark { position:absolute; z-index:6; width:5px; height:5px; border-radius:50%; background:#fff; box-shadow:0 0 7px 2px #fff,0 0 18px 5px #8de9ff; opacity:0; }
+.comicalSpark::after{content:"";position:absolute;left:50%;top:-11px;width:2px;height:27px;transform:translateX(-50%);background:#fff;box-shadow:0 0 10px #fff}.comicalSpark::before{content:"";position:absolute;left:-11px;top:50%;width:27px;height:2px;transform:translateY(-50%);background:#fff;box-shadow:0 0 10px #fff}
+.comicalSpark.s1{left:12%;top:23%}.comicalSpark.s2{left:79%;top:20%}.comicalSpark.s3{left:17%;top:71%}.comicalSpark.s4{left:84%;top:67%}.comicalSpark.s5{left:52%;top:13%}.comicalSpark.s6{left:65%;top:80%}.comicalSpark.s7{left:32%;top:32%}.comicalSpark.s8{left:70%;top:41%}.comicalSpark.s9{left:28%;top:58%}.comicalSpark.s10{left:58%;top:28%}
+#comicalFx.show .comicalSpark { animation:sparkBurstLong 5s cubic-bezier(.12,.8,.2,1) 18s both; }
+#comicalFx.instant .comicalSpark { animation:sparkBurstLong 5s cubic-bezier(.12,.8,.2,1) 9s both; }
+/* Luna waits until the effect is readable, then peeks from bottom-right */
+.comicalLuna { position:absolute; z-index:10; width:min(82vw,380px); right:-42%; bottom:2%; opacity:0; transform:translate(0,22%) rotate(10deg) scale(.68); filter:drop-shadow(0 14px 22px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(255,255,255,.45)); }
+#comicalFx.show .comicalLuna { animation:lunaPeekLong 2.2s cubic-bezier(.15,1.25,.22,1) 22s forwards, lunaFloat .9s ease-in-out 24.2s infinite; }
+#comicalFx.instant .comicalLuna { animation:lunaPeekLong 2.2s cubic-bezier(.15,1.25,.22,1) 13s forwards, lunaFloat .9s ease-in-out 15.2s infinite; }
+.comicalHalo { position:absolute; z-index:8; width:240px;height:240px;right:9%;bottom:15%;border-radius:50%;background:radial-gradient(circle,#fff 0,rgba(255,255,255,.92) 5%,rgba(255,105,222,.55) 24%,rgba(86,226,255,.28) 48%,transparent 70%);opacity:0;transform:scale(.22);filter:blur(2px);mix-blend-mode:screen; }
+#comicalFx.show .comicalHalo { animation:haloPopLong 2.2s cubic-bezier(.12,.9,.2,1) 21.8s forwards; }
+#comicalFx.instant .comicalHalo { animation:haloPopLong 2.2s cubic-bezier(.12,.9,.2,1) 12.8s forwards; }
+.comicalShout { position:absolute; z-index:12; left:50%; top:15%; width:100%; transform:translateX(-50%) scale(.45) rotate(-7deg); opacity:0; text-align:center; font-size:clamp(32px,8.6vw,62px); line-height:1; font-weight:1000; letter-spacing:-.06em; color:#fff; -webkit-text-stroke:1px rgba(255,255,255,.6); text-shadow:0 5px 0 #ff3bbd,0 0 10px #fff,0 0 28px #ffdd58,0 0 55px #ff4bd8; }
+#comicalFx.show .comicalShout { animation:shoutPopLong 1.4s cubic-bezier(.12,1.25,.2,1) 24.4s forwards; }
+#comicalFx.instant .comicalShout { animation:shoutPopLong 1.4s cubic-bezier(.12,1.25,.2,1) 15.4s forwards; }
+.comicalCongrats { position:absolute; z-index:13; left:50%; top:57%; width:100%; transform:translate(-50%,-50%) scale(.38) rotate(-2deg); opacity:0; text-align:center; font-size:clamp(29px,7.5vw,54px); line-height:1; font-weight:1000; letter-spacing:.01em; color:#fff; -webkit-text-stroke:1px rgba(255,255,255,.8); text-shadow:0 0 8px #ff56cb,0 0 18px #fff,0 0 38px #66e7ff,0 0 65px #ff54d9; }
+#comicalFx.show .comicalCongrats { animation:congratsHold 4.8s cubic-bezier(.12,1.22,.2,1) 25.2s forwards; }
+#comicalFx.instant .comicalCongrats { animation:congratsHold 4.8s cubic-bezier(.12,1.22,.2,1) 16.2s forwards; }
+.comicalBadge { position:absolute; z-index:14; left:50%; top:7%; transform:translateX(-50%); color:rgba(255,255,255,.9); font-size:11px; letter-spacing:.25em; opacity:0; text-shadow:0 0 12px #fff; }
+#comicalFx.show .comicalBadge { animation:badgeFadeLong 3s ease 21s forwards; }
+#comicalFx.instant .comicalBadge { animation:badgeFadeLong 3s ease 12s forwards; }
+.comicalFlash { position:absolute;inset:0;z-index:20;background:#fff;opacity:0;mix-blend-mode:screen; }
+#comicalFx.show .comicalFlash { animation:finalFlashLong .7s ease-out 29s forwards; }
+#comicalFx.instant .comicalFlash { animation:finalFlashLong .7s ease-out 20s forwards; }
+@keyframes blackoutHold { 0%{opacity:1} 31%{opacity:1} 36%{opacity:.98} 100%{opacity:0} }
+@keyframes blackoutInstant { 0%{opacity:1} 5%{opacity:1} 7%{opacity:.98} 100%{opacity:0} }
+@keyframes crackFade { 0%{opacity:0} 12%{opacity:1} 60%{opacity:1} 100%{opacity:0} }
+@keyframes crackDraw { 0%{stroke-dashoffset:230} 20%{stroke-dashoffset:120} 55%{stroke-dashoffset:0} 100%{stroke-dashoffset:0} }
+@keyframes rainbowBloomLong { 0%{opacity:0;transform:scale(.18) rotate(-30deg)} 18%{opacity:.16;transform:scale(.3) rotate(-24deg)} 45%{opacity:.48;transform:scale(.65) rotate(-8deg)} 72%{opacity:.78;transform:scale(1.0) rotate(8deg)} 100%{opacity:.82;transform:scale(1.45) rotate(18deg)} }
+@keyframes raysBlastLong { 0%{opacity:0;transform:scale(.08) rotate(-8deg)} 18%{opacity:.18} 42%{opacity:.55;transform:scale(.45) rotate(3deg)} 75%{opacity:.82;transform:scale(1.05) rotate(20deg)} 100%{opacity:.24;transform:scale(1.5) rotate(34deg)} }
+@keyframes burstRing { 0%{opacity:0;transform:scale(.2)} 15%{opacity:1;transform:scale(.6)} 38%{opacity:.9;transform:scale(3)} 62%{opacity:.8;transform:scale(8)} 100%{opacity:0;transform:scale(18)} }
+@keyframes corePulse { 0%{opacity:0;transform:scale(.4)} 20%{opacity:1;transform:scale(1.3)} 55%{opacity:1;transform:scale(2.2)} 100%{opacity:0;transform:scale(.7)} }
+@keyframes beamSlashLong { 0%{opacity:0;transform:rotate(-11deg) translateX(-25%) scaleX(.04)} 20%{opacity:.25} 48%{opacity:1;transform:rotate(-11deg) translateX(5%) scaleX(.8)} 76%{opacity:.92;transform:rotate(-11deg) translateX(35%) scaleX(1.35)} 100%{opacity:0;transform:rotate(-11deg) translateX(75%) scaleX(1.8)} }
+@keyframes beamSlashLong2 { 0%{opacity:0;transform:rotate(9deg) translateX(25%) scaleX(.04)} 22%{opacity:.25} 50%{opacity:.95;transform:rotate(9deg) translateX(0%) scaleX(.75)} 80%{opacity:.9;transform:rotate(9deg) translateX(-35%) scaleX(1.3)} 100%{opacity:0;transform:rotate(9deg) translateX(-70%) scaleX(1.8)} }
+@keyframes beamSlashLong3 { 0%{opacity:0;transform:rotate(-3deg) translateX(-15%) scaleX(.02)} 25%{opacity:.35} 55%{opacity:1;transform:rotate(-3deg) translateX(20%) scaleX(1)} 100%{opacity:0;transform:rotate(-3deg) translateX(80%) scaleX(2)} }
+@keyframes sparkBurstLong { 0%{opacity:0;transform:scale(.1)} 18%{opacity:1;transform:scale(1.6)} 48%{opacity:.9;transform:scale(1) translateY(-10px)} 75%{opacity:.7;transform:scale(.8) translateY(-25px)} 100%{opacity:0;transform:scale(.2) translateY(-45px)} }
+@keyframes haloPopLong { 0%{opacity:0;transform:scale(.22)} 42%{opacity:.85;transform:scale(.9)} 75%{opacity:.55;transform:scale(1.2)} 100%{opacity:.2;transform:scale(1.45)} }
+@keyframes lunaPeekLong { 0%{opacity:0;right:-42%;transform:translate(0,22%) rotate(10deg) scale(.68)} 35%{opacity:1;right:2%;transform:translate(0,-3%) rotate(-4deg) scale(1.03)} 68%{right:5%;transform:translate(-2%,0) rotate(2deg) scale(.99)} 100%{opacity:1;right:8%;transform:translate(0,0) rotate(0) scale(1)} }
+@keyframes lunaFloat { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-9px) rotate(-1.8deg)} }
+@keyframes shoutPopLong { 0%{opacity:0;transform:translateX(-50%) scale(.45) rotate(-7deg)} 45%{opacity:1;transform:translateX(-50%) scale(1.16) rotate(3deg)} 72%{transform:translateX(-50%) scale(.96) rotate(-1deg)} 100%{opacity:1;transform:translateX(-50%) scale(1) rotate(0)} }
+@keyframes congratsHold { 0%{opacity:0;transform:translate(-50%,-50%) scale(.38) rotate(-2deg)} 22%{opacity:1;transform:translate(-50%,-50%) scale(1.14) rotate(1deg)} 34%{transform:translate(-50%,-50%) scale(.98) rotate(-.5deg)} 100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)} }
+@keyframes finalFlashLong { 0%{opacity:0} 18%{opacity:.9} 100%{opacity:0} }
+@keyframes lunaExit { 0%{opacity:1;right:8%;transform:translate(0,0) rotate(0) scale(1)} 100%{opacity:0;right:-48%;transform:translate(25%,5%) rotate(9deg) scale(.78)} }
+@keyframes badgeFadeLong { 0%{opacity:0} 100%{opacity:1} }
+#stage.comicalShake { animation:screenShakeLong 4s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes screenShakeLong { 0%,100%{transform:translate3d(0,0,0) rotate(0)} 8%{transform:translate3d(-3px,2px,0) rotate(-.2deg)} 16%{transform:translate3d(4px,-2px,0) rotate(.25deg)} 25%{transform:translate3d(-5px,3px,0) rotate(-.3deg)} 34%{transform:translate3d(6px,-3px,0) rotate(.34deg)} 44%{transform:translate3d(-7px,3px,0) rotate(-.38deg)} 54%{transform:translate3d(8px,-4px,0) rotate(.42deg)} 64%{transform:translate3d(-6px,3px,0) rotate(-.34deg)} 75%{transform:translate3d(5px,-2px,0) rotate(.25deg)} 88%{transform:translate3d(-3px,1px,0) rotate(-.15deg)} }
+@media (prefers-reduced-motion:reduce){#stage.comicalShake{animation:none}.comicalBlackout,.comicalCrack,.comicalRainbow,.comicalRays,.comicalBeam,.comicalLuna,.comicalShout,.comicalCongrats,.comicalBadge,.comicalSpark,.comicalHalo,.comicalBurstRing,.comicalBurstCore,.comicalFlash{animation:none!important;opacity:1!important}}
+
+
+#comicalFx.longA.show .comicalBlackout { animation:blackoutHoldA 25s linear forwards; }
+#comicalFx.longA.show .comicalCrack { animation:crackFade 2.4s ease-in-out 3.0s forwards; }
+#comicalFx.longA.show .comicalCrack path { animation:crackDraw 1.8s ease-out 3.15s forwards; }
+#comicalFx.longA.show .comicalRainbow { animation:rainbowBloomLong 5s cubic-bezier(.12,.78,.18,1) 6s forwards; }
+#comicalFx.longA.show .comicalRays { animation:raysBlastLong 5s cubic-bezier(.08,.9,.18,1) 7s forwards; }
+#comicalFx.longA.show .comicalBurstRing { animation:burstRing 5s cubic-bezier(.12,.8,.18,1) 6s forwards; }
+#comicalFx.longA.show .comicalBurstCore { animation:corePulse 5s ease-out 6s forwards; }
+#comicalFx.longA.show .comicalBeam.b1 { animation:beamSlashLong 4.2s cubic-bezier(.08,.9,.15,1) 7.1s forwards; }
+#comicalFx.longA.show .comicalBeam.b2 { animation:beamSlashLong2 4s cubic-bezier(.08,.9,.15,1) 7.8s forwards; }
+#comicalFx.longA.show .comicalBeam.b3 { animation:beamSlashLong3 3.7s cubic-bezier(.08,.9,.15,1) 8.4s forwards; }
+#comicalFx.longA.show .comicalSpark { animation:sparkBurstLong 5s cubic-bezier(.12,.8,.2,1) 8s both; }
+#comicalFx.longA.show .comicalLuna { animation:lunaPeekLong 2.2s cubic-bezier(.15,1.25,.22,1) 14s forwards, lunaFloat .9s ease-in-out 16.2s infinite; }
+#comicalFx.longA.show .comicalHalo { animation:haloPopLong 2.2s cubic-bezier(.12,.9,.2,1) 13.8s forwards; }
+#comicalFx.longA.show .comicalShout { animation:shoutPopLong 1.4s cubic-bezier(.12,1.25,.2,1) 16.4s forwards; }
+#comicalFx.longA.show .comicalCongrats { animation:congratsHold 4.8s cubic-bezier(.12,1.22,.2,1) 19.2s forwards; }
+#comicalFx.longA.show .comicalBadge { animation:badgeFadeLong 3s ease 13s forwards; }
+#comicalFx.longA.show .comicalFlash { animation:finalFlashLong .7s ease-out 24s forwards; }
+@keyframes blackoutHoldA { 0%{opacity:1} 20%{opacity:1} 25%{opacity:0} 100%{opacity:0} }
+#preConfirm { position:absolute; inset:0; z-index:15; display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center; background:radial-gradient(circle at 50% 42%,rgba(33,38,85,.28),rgba(4,6,18,.88) 68%,rgba(2,3,10,.96)); backdrop-filter:blur(2px); opacity:0; }
+#preConfirm.show { display:flex; animation:preFadeIn .8s ease forwards; }
+.preWhisper { color:#aeb6df; font-size:14px; letter-spacing:.18em; opacity:0; transform:translateY(8px); }
+.preMain { margin-top:18px; color:#fff; font-size:30px; font-weight:900; letter-spacing:.08em; text-shadow:0 0 22px rgba(210,220,255,.85),0 0 55px rgba(145,150,255,.45); opacity:0; transform:scale(.82); }
+.preSub { margin-top:12px; color:#dfe3ff; font-size:12px; opacity:0; }
+#preConfirm.show .preWhisper { animation:preWhisper 1.2s ease forwards; animation-delay:1.1s; }
+#preConfirm.show .preMain { animation:preMain 1.2s cubic-bezier(.2,.8,.2,1) forwards; animation-delay:8.0s; }
+#preConfirm.show .preSub { animation:preSub 1s ease forwards; animation-delay:8.2s; }
+#preConfirm.urHint .preMain { text-shadow:0 0 24px rgba(255,245,190,.95),0 0 65px rgba(255,225,120,.65); }
+@keyframes preFadeIn { from{opacity:0} to{opacity:1} }
+@keyframes preWhisper { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes preMain { 0%{opacity:0;transform:scale(.82)} 55%{opacity:1;transform:scale(1.08)} 100%{opacity:1;transform:scale(1)} }
+@keyframes preSub { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+#preConfirm::after { content:""; position:absolute; width:230px; height:230px; border-radius:50%; border:1px solid rgba(220,225,255,.14); box-shadow:0 0 60px rgba(180,190,255,.12), inset 0 0 50px rgba(180,190,255,.08); animation:preRing 6.5s ease-in-out infinite; pointer-events:none; }
+@keyframes preRing { 0%,100%{transform:scale(.84);opacity:.25} 50%{transform:scale(1.08);opacity:.8} }
+#stage.revealing {
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100svh;
+  min-height:100svh;
+  z-index:100;
+  border-radius:0;
+  margin:0;
+  padding:18px 14px calc(18px + env(safe-area-inset-bottom));
+  background:radial-gradient(circle at 50% 42%,rgba(43,50,105,.72),rgba(6,8,22,.97) 62%,#03040d 100%);
+}\n#slotGrid { position:absolute; inset:18px; display:grid; grid-template-columns:repeat(5,1fr); gap:8px; align-content:start; }
+.slot { height:86px; border-radius:12px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:#767b9e; font-weight:800; font-size:11px; transition:.35s; }
+.slot.active { border-color:rgba(255,255,255,.45); box-shadow:0 0 18px rgba(170,180,255,.3); transform:scale(1.03); }
+.slot.done { background:rgba(255,255,255,.07); }
+.slot.N { color:#d8d9e4; } .slot.R { color:#8fd2ff; } .slot.SR { color:#d8a4ff; }
+.slot.SSR { color:#ffd48c; } .slot.UR { color:#fff0a4; box-shadow:0 0 24px rgba(255,225,111,.5); }
+#spotlight { position:relative; z-index:8; width:min(84vw,310px); min-height:390px; display:none; }
+.card { width:100%; min-height:390px; border-radius:24px; padding:18px; position:relative; overflow:hidden; background:linear-gradient(145deg,#1c2144,#0d1025); border:2px solid rgba(255,255,255,.13); box-shadow:0 22px 70px rgba(0,0,0,.5); transform:scale(.86); opacity:0; }
+.card.show { animation:cardIn .5s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes cardIn { to { opacity:1; transform:scale(1); } }
+.card::before { content:""; position:absolute; width:170px;height:170px;border-radius:50%;right:-65px;top:-65px;background:rgba(255,255,255,.08); }
+.rarity { display:inline-block; border-radius:999px; padding:6px 10px; font-size:13px; font-weight:900; background:rgba(255,255,255,.1); }
+.art { margin:17px auto 14px; width:205px;height:205px;border-radius:50%; display:flex; align-items:center;justify-content:center; position:relative; background:radial-gradient(circle,#cbd1ff 0,#6b75ba 32%,#1a2044 70%); box-shadow:0 0 45px rgba(160,174,255,.25); }
+.art::after { content:"☾"; font-size:105px; color:rgba(255,255,255,.88); transform:rotate(-18deg); text-shadow:0 0 18px rgba(255,255,255,.65); }
+.lunaFace { position:absolute; bottom:24px; font-size:54px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+.name { font-size:20px; font-weight:900; text-align:center; }
+.quote { text-align:center; color:#c6cae6; font-size:13px; margin-top:9px; line-height:1.6; }
+.high .art { box-shadow:0 0 70px rgba(220,190,255,.55); }
+.SSR .art { background:radial-gradient(circle,#fff1c7 0,#a878d7 30%,#171a3c 72%); }
+.UR .art { width:220px;height:220px; background:radial-gradient(circle,#fffbe0 0,#c2b7ff 27%,#433f9a 55%,#11132e 78%); box-shadow:0 0 95px rgba(255,233,132,.8); }
+.UR { border-color:rgba(255,226,123,.75); }
+.promotion { position:absolute; z-index:10; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(5,6,18,.82); backdrop-filter:blur(5px); }
+.promotion.show { display:flex; animation:fade .25s ease-out; }
+@keyframes fade { from {opacity:0} to {opacity:1} }
+.promoText { font-size:30px; font-weight:1000; text-shadow:0 0 25px rgba(255,255,255,.75); animation:pop .7s ease-out; }
+@keyframes pop { 0%{transform:scale(.4);opacity:0} 60%{transform:scale(1.16)} 100%{transform:scale(1);opacity:1} }
+.promoSub { margin-top:8px;color:#dfe2ff;font-size:13px; }
+#result { display:none; margin-top:14px; animation:resultIn .55s cubic-bezier(.2,.8,.2,1); }
+@keyframes resultIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.resultTitle { text-align:center; font-size:18px; font-weight:900; margin-bottom:10px; }
+.resultList { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.resultItem { border-radius:12px; padding:10px; background:rgba(255,255,255,.06); }
+.resultItem b { font-size:11px; } .resultItem div { font-size:13px; font-weight:800; margin-top:3px; }
+.log { margin-top:5px; color:#8f94b6; font-size:10px; text-align:center; min-height:14px; }
+#skip { position:absolute; z-index:20; right:12px; bottom:12px; display:none; border:1px solid rgba(255,255,255,.18); color:white; background:rgba(0,0,0,.45); border-radius:999px; padding:8px 13px; }
+.note { color:#858aaa; text-align:center; font-size:10px; margin-top:7px; line-height:1.4; }
+@media (max-width:520px) { #stage{min-height:255px;height:255px} #stage.revealing{min-height:100svh;height:100svh} #slotGrid{inset:14px;gap:6px} .slot{height:78px;font-size:10px} #spotlight{width:82vw} }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="versionBadge">DEVELOPMENT BUILD　v5.10 URロングプレミア COMICAL ANIMATION PROTOTYPE</div>
+    <div class="title">🌙 ルナガチャ</div>
+    <div class="sub">普通の日常 → 忘れられない一枚</div>
+  </div>
+  <div class="status">
+    <div class="pill">💎 石 <span id="stones">100</span></div>
+    <div class="pill">🎫 召喚 <span id="pulls">0</span></div>
+    <div class="pill">UR 1% / SSR 5% / SR 14%</div>
+  </div>
+  <div class="devTestWrap"><button id="comicalATestBtn" class="devTestBtn" type="button">🌈 A：ガタガタ→プチュン</button><button id="comicalBTestBtn" class="devTestBtn" type="button">🌈 B：いきなりプチュン</button><button id="solemnTestBtn" class="devTestBtn" type="button">🌙 荘厳演出テスト（SSR確定）</button></div>
+  <div class="actions">
+    <button class="mainBtn secondary" id="oneBtn" type="button">1回召喚<br><small>💎10</small></button>
+    <button class="mainBtn" id="tenBtn" type="button">10連召喚<br><small>💎100</small></button>
+  </div>
+
+  <div class="panel">
+    <div id="result">
+      <div class="resultTitle">🌙 今回の召喚結果</div>
+      <div class="resultList" id="resultList"></div>
+    </div>
+    <div id="stage">
+      <div class="stars"></div><div class="moon" id="moon"></div>
+      <div id="slotGrid"></div>
+      <div id="spotlight"><div id="card" class="card"></div></div>
+      <div id="comicalFx" aria-hidden="true">
+        <div class="comicalBlackout"></div>
+        <div class="comicalCrack" aria-hidden="true">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M50 50 L43 40 L45 29 L37 18 L40 7 M50 50 L61 43 L73 45 L86 37 L97 39 M50 50 L57 58 L55 69 L63 80 L61 94 M50 50 L39 57 L28 54 L16 62 L4 59 M50 50 L51 36 L57 28 L54 15 M50 50 L64 53 L74 61 L88 59 M50 50 L45 65 L36 74 L37 88 M50 50 L34 47 L24 38 L11 39" />
+          </svg>
+        </div>
+        <div class="comicalRainbow"></div><div class="comicalRays"></div>
+        <div class="comicalBeam b1"></div><div class="comicalBeam b2"></div><div class="comicalBeam b3"></div>
+        <div class="comicalBurstRing"></div><div class="comicalBurstCore"></div>
+        <div class="comicalSpark s1"></div><div class="comicalSpark s2"></div><div class="comicalSpark s3"></div><div class="comicalSpark s4"></div><div class="comicalSpark s5"></div><div class="comicalSpark s6"></div><div class="comicalSpark s7"></div><div class="comicalSpark s8"></div><div class="comicalSpark s9"></div><div class="comicalSpark s10"></div>
+        <div class="comicalHalo"></div>
+        <div class="comicalBadge">UR SPECIAL</div>
+        <img class="comicalLuna" src="chibi_luna_comical.png" alt="チビルナ">
+        <div class="comicalShout">おおあたりぃー！</div>
+        <div class="comicalCongrats">CONGRATULATIONS!!</div>
+        <div class="comicalFlash"></div>
+      </div>
+      <div id="preConfirm"><div class="preWhisper">……特別な気配……</div><div class="preMain">✨ CONGRATULATIONS!! ✨</div><div class="preSub">月が、少しだけ近い。</div></div>
+      <div id="promotion" class="promotion">
+        <div class="promoText">✨ 昇格！！</div>
+        <div class="promoSub" id="promoSub">まだ終わらない……</div>
+      </div>
+      <button id="skip" type="button">SKIP</button>
+    </div>
+    <div class="log" id="log">10連は自動で1枚ずつ魅せます。</div>
+  </div>
+  <div class="note">※ SSR以上が含まれる10連では、約50%で特別演出。<br>残り約50%は、めくり中にサプライズ昇格します。</div>
+</div>
+
+<script>
+(function() {
+"use strict";
+
+const CARD_POOL = [{rarity:'N',name:'ルナ【ねむい】',quote:'……あと5分……'},{rarity:'N',name:'ルナ【通常運転】',quote:'まあ、なんとかなるっしょ'},{rarity:'R',name:'ルナ【夜さんぽ】',quote:'月、きれいじゃん'},{rarity:'R',name:'ルナ【ネコ発見】',quote:'……いた'},{rarity:'SR',name:'ルナ【風の音】',quote:'……なんか、落ち着く'},{rarity:'SR',name:'ルナ【お勉強中】',quote:'……やればできる、たぶん'},{rarity:'SSR',name:'ルナ【星降る夜】',quote:'……別に、嬉しくないけど'},{rarity:'SSR',name:'ルナ【月と、どこまでも】',quote:'きっと、また会えるよ'},{rarity:'UR',name:'ルナ【月を想う】',quote:'……あなた、来てくれたんだ'}];
+const weights = [{r:"N",w:50},{r:"R",w:30},{r:"SR",w:14},{r:"SSR",w:5},{r:"UR",w:1}];
+const rank = {N:0,R:1,SR:2,SSR:3,UR:4};
+
+let stones = 100, pulls = 0, busy = false, skipRequested = false;
+let currentCards = [], timer = null;
+
+const $ = id => document.getElementById(id);
+const stonesEl=$("stones"), pullsEl=$("pulls"), tenBtn=$("tenBtn"), oneBtn=$("oneBtn");
+const stage=$("stage"), grid=$("slotGrid"), spotlight=$("spotlight"), cardEl=$("card");
+const promo=$("promotion"), promoSub=$("promoSub"), skipBtn=$("skip"), preConfirmEl=$("preConfirm");
+const result=$("result"), resultList=$("resultList"), log=$("log"), moon=$("moon"), comicalATestBtn=$("comicalATestBtn"), comicalBTestBtn=$("comicalBTestBtn"), comicalFx=$("comicalFx"), solemnTestBtn=$("solemnTestBtn");
+
+function updateStatus() {
+  stonesEl.textContent=stones; pullsEl.textContent=pulls;
+  tenBtn.disabled=busy || stones<100; oneBtn.disabled=busy || stones<10;
+}
+
+function weightedRarity() {
+  const x=Math.random()*100; let s=0;
+  for(const v of weights) { s+=v.w; if(x<s) return v.r; }
+  return "N";
+}
+
+function pickCard(r) {
+  const list=CARD_POOL.filter(c=>c.rarity===r);
+  return list[Math.floor(Math.random()*list.length)] || CARD_POOL[0];
+}
+
+function drawOne() {
+  const r=weightedRarity();
+  return pickCard(r);
+}
+
+function buildSlots(n) {
+  grid.innerHTML="";
+  for(let i=0;i<n;i++) {
+    const s=document.createElement("div");
+    s.className="slot"; s.textContent=(i+1)+"枚目";
+    grid.appendChild(s);
+  }
+}
+
+function setSlot(i, r, done) {
+  const s=grid.children[i]; if(!s) return;
+  s.className="slot "+(done ? "done" : r+" active");
+  s.textContent=done ? "✓" : "OPEN";
+}
+
+function showCard(c, displayRarity, index) {
+  cardEl.className="card "+displayRarity+(rank[displayRarity]>=2?" high":"");
+  cardEl.innerHTML='<div class="rarity">'+displayRarity+'</div>'+
+    '<div class="art"><div class="lunaFace">🌙</div></div>'+
+    '<div class="name">'+c.name+'</div><div class="quote">'+c.quote+'</div>';
+  spotlight.style.display="block";
+  void cardEl.offsetWidth;
+  cardEl.classList.add("show");
+  moon.style.opacity = displayRarity==="UR" ? ".55" : displayRarity==="SSR" ? ".38" : displayRarity==="SR" ? ".28" : ".15";
+  if(displayRarity==="UR") moon.style.transform="scale(1.18)";
+  else moon.style.transform="scale(1)";
+}
+
+function sleep(ms) {
+  return new Promise(resolve=>setTimeout(resolve,ms));
+}
+async function waitWithSkip(ms) {
+  const step=100;
+  let left=ms;
+  while(left>0) {
+    if(skipRequested) return false;
+    const t=Math.min(step,left);
+    await sleep(t);
+    left-=t;
+  }
+  return !skipRequested;
+}
+
+async function playPreConfirm(highestRarity) {
+  preConfirmEl.classList.remove("urHint");
+  preConfirmEl.querySelector(".preMain").textContent="✨ CONGRATULATIONS!! ✨";
+  preConfirmEl.querySelector(".preSub").textContent="月が、少しだけ近い。";
+  if(highestRarity==="UR") {
+    preConfirmEl.classList.add("urHint");
+    preConfirmEl.querySelector(".preSub").textContent="……月の光が、もう一段強くなる。";
+  }
+  preConfirmEl.classList.add("show");
+  moon.style.opacity= ".24";
+  moon.style.transform="scale(.98)";
+  await sleep(1600);
+  if(skipRequested) return false;
+  log.textContent="";
+  await sleep(2500);
+  if(skipRequested) return false;
+  moon.style.opacity=highestRarity==="UR" ? ".95" : ".72";
+  moon.style.transform=highestRarity==="UR" ? "scale(1.25)" : "scale(1.15)";
+  await sleep(3900);
+  if(skipRequested) return false;
+  log.textContent="✨ CONGRATULATIONS!! ✨";
+  await sleep(2000);
+  if(skipRequested) return false;
+  preConfirmEl.classList.remove("show");
+  return true;
+}
+
+function clearTimers() {
+  if(timer) { clearTimeout(timer); timer=null; }
+}
+
+function playPromotion(finalRarity) {
+  promoSub.textContent = finalRarity+"まで、一気に昇格……！";
+  promo.classList.add("show");
+  return sleep(finalRarity==="UR"?1500:900).then(()=>{ promo.classList.remove("show"); });
+}
+
+function renderResults(cards) {
+  resultList.innerHTML="";
+  cards.forEach((c,i)=>{
+    const d=document.createElement("div"); d.className="resultItem "+c.rarity;
+    d.innerHTML="<b>"+(i+1)+"枚目　"+c.rarity+"</b><div>"+c.name+"</div>";
+    resultList.appendChild(d);
+  });
+  result.style.display="block";
+}
+
+async function revealTen() {
+  const hasHigh=currentCards.some(c=>rank[c.rarity]>=3);
+  const preConfirm=hasHigh && Math.random()<0.5;
+  skipRequested=false;
+  skipBtn.style.display="block";
+  result.style.display="none";
+  grid.style.display="none";
+  stage.classList.add("revealing");
+  spotlight.style.display="none";
+  log.textContent=preConfirm ? "🌙 月の光が強くなる……高レアの気配！" : "静かな夜。まだ何もわからない……";
+  if(preConfirm) {
+    const highest=currentCards.reduce((best,c)=>rank[c.rarity]>rank[best]?c.rarity:best,"N");
+    const played=await playPreConfirm(highest);
+    if(!played) return finishSkip();
+  } else {
+    await sleep(500);
+  }
+
+  for(let i=0;i<currentCards.length;i++) {
+    if(skipRequested) return finishSkip();
+    const c=currentCards[i];
+    setSlot(i,c.rarity,false);
+    spotlight.style.display="block";
+    cardEl.className="card";
+    cardEl.classList.remove("show");
+    const display = (!preConfirm && rank[c.rarity]>=2) ? 
+      (c.rarity==="UR"?"SSR":c.rarity==="SSR"?"SR":"R") : c.rarity;
+    showCard(c,display,i);
+    log.textContent=(i+1)+"枚目を召喚……";
+    if(rank[c.rarity]>=2) {{
+      stage.classList.add("highImpact");
+      setTimeout(()=>stage.classList.remove("highImpact"), 700);
+    }}
+    await sleep(display!==c.rarity ? 850 : (rank[c.rarity]>=3?1250:700));
+    if(skipRequested) return finishSkip();
+
+    if(display!==c.rarity) {
+      await playPromotion(c.rarity);
+      if(skipRequested) return finishSkip();
+      showCard(c,c.rarity,i);
+      log.textContent="✨ "+c.rarity+"を獲得！";
+      await sleep(c.rarity==="UR"?1500:850);
+    } else {
+      log.textContent=c.rarity+" "+c.name;
+      await sleep(c.rarity==="UR"?1550:650);
+    }
+    setSlot(i,c.rarity,true);
+    spotlight.style.display="none";
+  }
+  skipBtn.style.display="none";
+  finishNormal();
+}
+
+function finishNormal() {
+  grid.style.display="none";
+  spotlight.style.display="none";
+  promo.classList.remove("show");
+  preConfirmEl.classList.remove("show");
+  stage.classList.remove("revealing");
+  stage.style.display="none";
+  renderResults(currentCards);
+  moon.style.opacity=".18"; moon.style.transform="scale(1)";
+  log.textContent="召喚完了！";
+  busy=false; updateStatus();
+}
+
+function finishSkip() {
+  skipRequested=true;
+  grid.style.display="grid";
+  clearTimers();
+  currentCards.forEach((c,i)=>setSlot(i,c.rarity,true));
+  skipBtn.style.display="none";
+  stage.classList.remove("revealing");
+  spotlight.style.display="none"; promo.classList.remove("show");
+  stage.style.display="none";
+  renderResults(currentCards);
+  moon.style.opacity=".18"; moon.style.transform="scale(1)";
+  log.textContent="SKIP：結果を表示しました。";
+  busy=false; updateStatus();
+}
+
+async function tenPull() {
+  if(busy || stones<100) return;
+  busy=true; stones-=100; pulls+=10; updateStatus();
+  stage.style.display="flex";
+  stage.classList.remove("revealing");
+  currentCards=Array.from({length:10},drawOne);
+  buildSlots(10);
+  result.style.display="none";
+  stage.style.display="flex";
+  log.textContent="🌙 夜が静かに深くなる……";
+  moon.style.opacity=".32"; moon.style.transform="scale(.95)";
+  await sleep(650);
+  await revealTen();
+}
+
+async function playComicalPrototype(mode) {
+  if(busy) return;
+  busy=true; skipRequested=false;
+  currentCards=Array.from({length:10},drawOne);
+  currentCards[0]={rarity:"UR",name:"ルナ【月を想う】",quote:"……あなた、来てくれたんだ"};
+  stage.style.display="flex";
+  stage.classList.remove("revealing","highImpact","comicalShake");
+  stage.classList.add("revealing");
+  result.style.display="none"; grid.style.display="none"; spotlight.style.display="none";
+  promo.classList.remove("show"); preConfirmEl.classList.remove("show");
+  skipBtn.style.display="block";
+  moon.style.opacity="0"; moon.style.transform="scale(.9)";
+  log.textContent=mode==="A" ? "🧪 URプレミア A：異変→プチュン→30秒ロングテイク" : "🧪 URプレミア B：突然プチュン→30秒ロングテイク";
+  comicalFx.classList.remove("show","instant","longA");
+  const luna=comicalFx.querySelector(".comicalLuna");
+  luna.classList.remove("exit");
+  void comicalFx.offsetWidth;
+
+  if(mode==="A") {
+    // 0-4s: the anomaly slowly becomes unmistakable.
+    await sleep(300);
+    if(skipRequested) return finishSkip();
+    log.textContent="……ん？";
+    stage.classList.add("comicalShake");
+    const okShake=await waitWithSkip(4000);
+    stage.classList.remove("comicalShake");
+    if(!okShake) return finishSkip();
+    log.textContent="……なに、これ？";
+    // 4-5s: a short recognition beat before the blackout.
+    if(!await waitWithSkip(1000)) return finishSkip();
+  }
+
+  void comicalFx.offsetWidth;
+  if(mode==="B") comicalFx.classList.add("instant");
+  if(mode==="A") comicalFx.classList.add("longA");
+  comicalFx.classList.add("show");
+
+  // Exactly 30s of player-facing premium time.
+  // A already spent 5s on the anomaly, so its FX timeline is 25s.
+  const fxDuration=mode==="A" ? 25000 : 30000;
+  const ok=await waitWithSkip(fxDuration);
+  if(!ok) return finishSkip();
+
+  luna.classList.add("exit");
+  if(!await waitWithSkip(650)) return finishSkip();
+  comicalFx.classList.remove("show","instant","longA");
+  skipBtn.style.display="none";
+  log.textContent="🌙 10連召喚……";
+  await revealComicalCards();
+}
+
+async function revealComicalCards() {
+  for(let i=0;i<currentCards.length;i++) {
+    if(skipRequested) return finishSkip();
+    const c=currentCards[i];
+    setSlot(i,c.rarity,false);
+    spotlight.style.display="block";
+    cardEl.className="card"; cardEl.classList.remove("show");
+    showCard(c,c.rarity,i);
+    log.textContent=(i+1)+"枚目を召喚……";
+    if(rank[c.rarity]>=2) { stage.classList.add("highImpact"); setTimeout(()=>stage.classList.remove("highImpact"),700); }
+    await sleep(rank[c.rarity]>=3?1250:700);
+    if(skipRequested) return finishSkip();
+    log.textContent=c.rarity+" "+c.name;
+    await sleep(c.rarity==="UR"?1550:650);
+    setSlot(i,c.rarity,true); spotlight.style.display="none";
+  }
+  skipBtn.style.display="none";
+  finishNormal();
+}
+
+async function solemnTest() {
+  if(busy) return;
+  busy=true;
+  skipRequested=false;
+
+  // Developer test only: force a 10-pull containing one SSR.
+  // The solemn confirmation route is forced so it can be tested without waiting for RNG.
+  currentCards=Array.from({length:10},drawOne);
+  currentCards[0]={
+    rarity:"SSR",
+    name:"ルナ【星降る夜】",
+    quote:"……別に、嬉しくないけど"
+  };
+
+  stage.style.display="flex";
+  // Confirmation itself is full-screen, just like the following 10-pull reveal.
+  stage.classList.remove("highImpact");
+  stage.classList.add("revealing");
+  result.style.display="none";
+  grid.style.display="none";
+  spotlight.style.display="none";
+  promo.classList.remove("show");
+  preConfirmEl.classList.remove("show");
+  skipBtn.style.display="none";
+  moon.style.opacity="0";
+  moon.style.transform="scale(.9)";
+  log.textContent="🧪 荘厳演出テスト……";
+
+  // Force the solemn confirmation itself; rarity remains hidden from the player-facing message.
+  const played=await playPreConfirm("SSR");
+  if(!played) return finishSkip();
+
+  // Already full-screen from the confirmation phase; transition directly into the 10-pull reveal.
+  grid.style.display="none";
+  spotlight.style.display="none";
+  result.style.display="none";
+  log.textContent="🌙 10連召喚……";
+
+  for(let i=0;i<currentCards.length;i++) {
+    if(skipRequested) return finishSkip();
+    const c=currentCards[i];
+    setSlot(i,c.rarity,false);
+    spotlight.style.display="block";
+    cardEl.className="card";
+    cardEl.classList.remove("show");
+    showCard(c,c.rarity,i);
+    log.textContent=(i+1)+"枚目を召喚……";
+
+    if(rank[c.rarity]>=2) {
+      stage.classList.add("highImpact");
+      setTimeout(()=>stage.classList.remove("highImpact"),700);
+    }
+
+    await sleep(rank[c.rarity]>=3?1250:700);
+    if(skipRequested) return finishSkip();
+
+    log.textContent=c.rarity+" "+c.name;
+    await sleep(c.rarity==="UR"?1550:650);
+    setSlot(i,c.rarity,true);
+    spotlight.style.display="none";
+  }
+
+  skipBtn.style.display="none";
+  finishNormal();
+}
+
+async function onePull() {
+  if(busy || stones<10) return;
+  busy=true; stones-=10; pulls+=1; updateStatus();
+  stage.style.display="flex";
+  currentCards=[drawOne()];
+  buildSlots(1);
+  stage.classList.remove("revealing");
+  log.textContent="🌙 ルナを召喚……";
+  await sleep(500);
+  const c=currentCards[0];
+  setSlot(0,c.rarity,false);
+  showCard(c,c.rarity,0);
+  await sleep(c.rarity==="UR"?1700:c.rarity==="SSR"?1300:800);
+  setSlot(0,c.rarity,true);
+  spotlight.style.display="none";
+  renderResults(currentCards);
+  log.textContent="召喚完了！";
+  busy=false; updateStatus();
+}
+
+
+async function comicalTest(mode) { await playComicalPrototype(mode); }
+tenBtn.addEventListener("click",tenPull);
+oneBtn.addEventListener("click",onePull);
+skipBtn.addEventListener("click",()=>{ if(busy) skipRequested=true; });
+comicalATestBtn.addEventListener("click",()=>comicalTest("A"));
+comicalBTestBtn.addEventListener("click",()=>comicalTest("B"));
+solemnTestBtn.addEventListener("click",solemnTest);
+
+buildSlots(10);
+grid.style.display="none";
+updateStatus();
+})();
+</script>
+</body>
+</html>
