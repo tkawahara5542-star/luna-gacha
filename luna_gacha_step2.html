@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080c1d">
+<title>🌙 ルナガチャ Prototype 2.0</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;color:#f5f7ff;font-family:system-ui,-apple-system,"Hiragino Sans",sans-serif;background:radial-gradient(circle at 50% -10%,#3c4f89,#0b1124 45%,#050812);min-height:100vh;overflow-x:hidden}
+.app{width:min(920px,100%);margin:auto;padding:18px}
+header{text-align:center;margin-bottom:14px}h1{margin:0;font-size:30px}.sub{color:#aeb8d4;font-size:13px}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 15px;border:1px solid #3b496d;border-radius:15px;background:#121a30;margin-bottom:12px}.crystal{font-weight:900}.status{color:#aeb8d4;font-size:12px;text-align:right}
+.stage{position:relative;overflow:hidden;border:1px solid #3b496d;border-radius:23px;background:linear-gradient(180deg,#172342,#0c1428);padding:24px 16px;min-height:470px;box-shadow:inset 0 0 100px #5d73c018;transition:.35s}
+.stage:before,.stage:after{content:"";position:absolute;inset:auto;pointer-events:none}.stage:before{width:5px;height:5px;background:#fff;border-radius:50%;left:12%;top:18%;box-shadow:110px 80px #fff,230px 20px #fff,330px 120px #fff,470px 40px #fff,560px 170px #fff,690px 70px #fff;opacity:.45}.stage:after{width:2px;height:2px;background:#fff;border-radius:50%;left:30%;top:8%;box-shadow:80px 150px #fff,180px 40px #fff,280px 170px #fff,410px 80px #fff,520px 10px #fff,620px 150px #fff;opacity:.55}
+.moon{position:relative;z-index:2;width:110px;height:110px;border-radius:50%;margin:12px auto 17px;background:radial-gradient(circle at 35% 30%,#fff,#e4ebff 48%,#a7b4d7);box-shadow:0 0 35px #dce5ffbb,0 0 90px #91a4ff44;transition:.35s}.moon:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;left:25px;top:30px;background:#c6cde0;opacity:.45;box-shadow:42px 34px 0 -4px #c6cde0}
+.message{position:relative;z-index:2;text-align:center;font-weight:900;min-height:28px;font-size:18px}.hint{position:relative;z-index:2;text-align:center;color:#9da9c8;font-size:12px;margin-top:8px}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px 0}button{font:inherit}.action{border:1px solid #5c6e9d;background:#26365f;color:#fff;border-radius:999px;padding:11px 23px;font-weight:900;cursor:pointer;box-shadow:0 5px 20px #0004}.action:hover:not(:disabled){filter:brightness(1.12);transform:translateY(-1px)}.action:disabled{opacity:.45;cursor:not-allowed}.dev{display:block;margin:0 auto;border:0;background:transparent;color:#7180a5;font-size:11px;cursor:pointer}
+.result{position:relative;z-index:2;display:none;max-width:300px;margin:20px auto 0}.result.show{display:block}.card{border-radius:17px;border:1px solid #53658f;background:#11192d;padding:10px;min-height:340px;box-shadow:0 15px 45px #0007;transform:translateY(12px) scale(.96);opacity:0}.result.show .card{animation:cardIn .45s ease forwards}
+.art{height:250px;border-radius:12px;background:radial-gradient(circle at 78% 17%,#f3f5ff 0 6%,transparent 7%),linear-gradient(145deg,#929fc7,#2a3555);position:relative;overflow:hidden}.art:after{content:"";position:absolute;inset:-40%;background:linear-gradient(110deg,transparent 40%,#ffffff55 50%,transparent 60%);transform:translateX(-60%);animation:shine 1.1s .15s ease-out forwards}
+.face{position:absolute;width:62px;height:62px;border-radius:50%;background:#eee9e3;left:50%;top:34%;transform:translate(-50%,-50%)}.body{position:absolute;width:92px;height:90px;border-radius:48% 48% 36% 36%;background:#505666;left:50%;top:53%;transform:translateX(-50%)}.ear1,.ear2{position:absolute;z-index:2;top:20%;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:25px solid #505666}.ear1{left:calc(50% - 42px)}.ear2{left:calc(50% + 14px)}
+.cardinfo{text-align:center;padding-top:9px}.rarity{font-size:12px;font-weight:1000;letter-spacing:.14em}.name{font-size:19px;font-weight:1000;margin:2px}.quote{font-size:12px;color:#cbd3e8}
+.collection{margin-top:15px;border:1px solid #3b496d;border-radius:18px;background:#10182b;padding:15px}.collection h2{font-size:17px;margin:0 0 10px}.rarities{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.badge{padding:9px 5px;text-align:center;border-radius:10px;background:#18213a;border:1px solid #364566;font-size:11px}.badge b{display:block;font-size:16px}.history{margin-top:12px;color:#aeb8d4;font-size:12px;line-height:1.7}
+/* rarity stages */
+.stage.rN{box-shadow:inset 0 0 100px #9aa5c018}.stage.rR{box-shadow:inset 0 0 120px #7eb8ff30}.stage.rSR{box-shadow:inset 0 0 150px #b78cff45}.stage.rSSR{box-shadow:inset 0 0 180px #ff9eea55}.stage.rUR{box-shadow:inset 0 0 220px #fff5a866,0 0 35px #fff4a833}.stage.rR .moon{box-shadow:0 0 50px #9bd0ff,0 0 120px #70a8ff55}.stage.rSR .moon{box-shadow:0 0 60px #d3a8ff,0 0 150px #ad6cff77;transform:scale(1.08)}.stage.rSSR .moon{box-shadow:0 0 75px #ffd1ef,0 0 190px #ff70c477;transform:scale(1.18)}.stage.rUR .moon{box-shadow:0 0 90px #fff,0 0 230px #fff0a8cc,0 0 340px #a98cff55;transform:scale(1.3)}
+.stage.rR .message{animation:pulse .8s ease}.stage.rSR .message{animation:pulse .65s ease 2}.stage.rSSR .message{animation:pulse .5s ease 3}.stage.rUR .message{animation:urText 1.2s ease}
+.stage.flash{animation:flash .55s ease}.stage.shake{animation:shake .5s ease}.stage.rUR.shake{animation:shake .8s ease,urGlow 1.6s ease}
+@keyframes cardIn{to{transform:none;opacity:1}}@keyframes shine{to{transform:translateX(60%)}}@keyframes pulse{50%{transform:scale(1.07);text-shadow:0 0 18px #fff}}@keyframes flash{0%{filter:brightness(1)}35%{filter:brightness(2.2)}100%{filter:brightness(1)}}@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}@keyframes urText{0%{opacity:.2;transform:scale(.9)}55%{opacity:1;transform:scale(1.12);text-shadow:0 0 25px #fff}100%{transform:scale(1)}}@keyframes urGlow{50%{box-shadow:inset 0 0 260px #fff8b077,0 0 55px #fff6b044}}
+.overlay{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;background:#050817dd;backdrop-filter:blur(5px)}.overlay.show{display:flex}.summonText{text-align:center;font-weight:1000;font-size:25px;text-shadow:0 0 25px #fff;animation:overlayText 1s ease}.summonText small{display:block;font-size:12px;color:#b8c1db;margin-top:8px}@keyframes overlayText{0%{opacity:0;transform:scale(.7)}45%{opacity:1;transform:scale(1.15)}100%{transform:scale(1)}}
+@media(max-width:520px){.app{padding:10px}h1{font-size:24px}.stage{padding:20px 12px;min-height:470px}.rarities{grid-template-columns:repeat(3,1fr)}.top{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay"><div class="summonText" id="summonText">月が、動いた。<small>召喚結果を確認しています……</small></div></div>
+<div class="app">
+<header><h1>🌙 ルナガチャ</h1><div class="sub">Prototype 2.0 — 召喚演出版</div></header>
+<div class="top"><div class="crystal">💎 月晶石：<span id="stone">100</span></div><div class="status">1回：10個　／　10連：100個<br><span id="pulls">召喚回数：0</span></div></div>
+<section class="stage" id="stage"><div class="moon" id="moon"></div><div class="message" id="message">月は静かに、あなたを待っている。</div><div class="hint" id="hint">召喚すると、月があなたの結果を告げる。</div><div class="result" id="result"></div></section>
+<div class="actions"><button class="action" id="one">🌙 1回召喚</button><button class="action" id="ten">✨ 10連召喚</button></div>
+<button class="dev" id="recharge">［テスト］月晶石を＋100</button>
+<section class="collection"><h2>📖 ルナ図鑑</h2><div class="rarities" id="rarities"></div><div class="history" id="history">まだ召喚履歴はありません。</div></section>
+</div>
+<script>
+"use strict";
+const pool=[
+{r:"UR",n:"ルナ【月を想う】",q:"……あなた、来てくれたんだ"},{r:"SSR",n:"ルナ【星降る夜】",q:"……別に、嬉しくないけど"},{r:"SSR",n:"ルナ【月と、どこまでも】",q:"きっと、また会えるよ"},{r:"SR",n:"ルナ【風の音】",q:"……なんか、落ち着く"},{r:"SR",n:"ルナ【お勉強中】",q:"……やればできる、たぶん"},{r:"R",n:"ルナ【夜さんぽ】",q:"月、きれいじゃん"},{r:"R",n:"ルナ【ネコ発見】",q:"……いた"},{r:"N",n:"ルナ【ねむい】",q:"……あと5分……"},{r:"N",n:"ルナ【通常運転】",q:"まあ、なんとかなるっしょ"}
+];
+const weights=[["UR",1],["SSR",5],["SR",14],["R",30],["N",50]];
+const owned={N:new Set(),R:new Set(),SR:new Set(),SSR:new Set(),UR:new Set()};let stones=100,totalPulls=0,history=[];const $=id=>document.getElementById(id);
+function rarity(){let x=Math.random()*100;for(const[r,w]of weights){x-=w;if(x<0)return r}return"N"}function pick(r){const a=pool.filter(x=>x.r===r);return a[Math.floor(Math.random()*a.length)]}function draw(){return pick(rarity())}
+function renderCard(c){const s=$("result");s.className="result show";s.innerHTML='<div class="card"><div class="art"><div class="face"></div><div class="body"></div><div class="ear1"></div><div class="ear2"></div></div><div class="cardinfo"><div class="rarity">★ '+c.r+'</div><div class="name">'+c.n+'</div><div class="quote">「'+c.q+'」</div></div></div>'}
+function addHistory(list){history.unshift(...list);history=history.slice(0,12);$("history").innerHTML=history.map((c,i)=>(i+1)+"． <b>"+c.r+"</b> "+c.n).join("<br>")}
+function updateBook(){$("rarities").innerHTML=["N","R","SR","SSR","UR"].map(r=>'<div class="badge"><b>'+owned[r].size+'</b>'+r+'<br><span>所持</span></div>').join("")}
+function use(n){if(stones<n){$("message").textContent="月晶石が足りない……";return false}stones-=n;$("stone").textContent=stones;return true}
+function stageEffect(best){const st=$("stage");st.className="stage";void st.offsetWidth;st.classList.add("r"+best,"flash");if(best!=="N")st.classList.add("shake");$("hint").textContent=best==="UR"?"月が、あなたを選んだ。":best==="SSR"?"いつもより強い光が、夜を染める。":best==="SR"?"少しだけ、特別な風が吹いた。":"召喚結果を確認……"}
+function summon(list){const best=["UR","SSR","SR","R","N"].find(r=>list.some(c=>c.r===r));const c=list.find(x=>x.r===best);stageEffect(best);$("message").textContent=best==="UR"?"――月が、応えた。":best+" のルナが現れた。";renderCard(c);updateBook()}
+function onePull(){if(!use(10))return;totalPulls++;$("pulls").textContent="召喚回数："+totalPulls;const c=draw();owned[c.r].add(c.n);addHistory([c]);showOverlay([c])}
+function tenPull(){if(!use(100))return;totalPulls+=10;$("pulls").textContent="召喚回数："+totalPulls;const list=Array.from({length:10},draw);list.forEach(c=>owned[c.r].add(c.n));addHistory(list);showOverlay(list)}
+function showOverlay(list){$("overlay").classList.add("show");setTimeout(()=>{$("overlay").classList.remove("show");summon(list)},900)}
+$("one").onclick=onePull;$("ten").onclick=tenPull;$("recharge").onclick=()=>{stones+=100;$("stone").textContent=stones;$("message").textContent="月晶石を補充した。"};updateBook();
+</script>
+</body>
+</html>
