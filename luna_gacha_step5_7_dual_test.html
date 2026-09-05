@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ルナ🌙ガチャ</title>
+<style>
+:root {
+  --bg:#080a18; --panel:#11152b; --text:#f7f7ff; --muted:#aeb3d5;
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { margin:0; min-height:100%; background:radial-gradient(circle at 50% 15%,#20295b 0,#0c1025 42%,#050611 100%); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; }
+body { overflow-x:hidden; }
+button { font:inherit; }
+.devTestWrap { display:flex; gap:8px; flex-wrap:wrap; justify-content:center;  text-align:center; margin:4px 0 7px; }
+.devTestBtn {
+  appearance:none; border:1px dashed rgba(255,255,255,.28);
+  background:rgba(255,255,255,.05); color:#cfd4ff;
+  border-radius:10px; padding:7px 11px; font-size:11px;
+}
+.devTestBtn:active { transform:scale(.98); background:rgba(255,255,255,.09); }
+
+#app { width:100%; max-width:760px; margin:auto; padding:7px 12px 10px; }
+.header { text-align:center; padding:3px 0 7px; }
+.versionBadge { display:inline-block; margin-bottom:4px; padding:4px 9px; border-radius:999px; font-size:10px; letter-spacing:.08em; color:#bfc6ef; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); }
+.title { font-size:26px; font-weight:800; letter-spacing:.06em; }
+.sub { color:#b9bee0; font-size:11px; margin-top:3px; }
+.status { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin:5px 0 8px; }
+.pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:6px 9px; font-size:11px; }
+.actions { display:flex; gap:7px; margin-bottom:8px; }
+.mainBtn { flex:1; border:0; border-radius:13px; padding:10px 8px; color:white; font-weight:800; background:linear-gradient(135deg,#6d5dfc,#a44cff); box-shadow:0 8px 22px rgba(92,67,255,.25); }
+.mainBtn.secondary { background:linear-gradient(135deg,#26345d,#3e4d7c); box-shadow:none; }
+.mainBtn:disabled { opacity:.45; }
+.panel { background:rgba(13,17,38,.82); border:1px solid rgba(255,255,255,.09); border-radius:22px; padding:14px; box-shadow:0 18px 50px rgba(0,0,0,.25); }
+#stage { min-height:245px; height:245px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:18px; background:radial-gradient(circle at 50% 35%,rgba(99,108,207,.2),transparent 42%); }
+.moon { position:absolute; width:125px; height:125px; border-radius:50%; background:radial-gradient(circle at 38% 34%,#fff 0,#e7eaff 42%,#aeb7ed 100%); box-shadow:0 0 60px rgba(205,214,255,.35); opacity:.15; transition:opacity .35s,transform .6s; }
+.stars { position:absolute; inset:0; background-image:radial-gradient(#fff 1px,transparent 1px); background-size:43px 43px; opacity:.13; }
+#stage.revealing #slotGrid { display:none !important; }
+#preConfirm { position:absolute; inset:0; z-index:15; display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center; background:radial-gradient(circle at 50% 42%,rgba(33,38,85,.28),rgba(4,6,18,.88) 68%,rgba(2,3,10,.96)); backdrop-filter:blur(2px); opacity:0; }
+#preConfirm.show { display:flex; animation:preFadeIn .8s ease forwards; }
+.preWhisper { color:#aeb6df; font-size:14px; letter-spacing:.18em; opacity:0; transform:translateY(8px); }
+.preMain { margin-top:18px; color:#fff; font-size:30px; font-weight:900; letter-spacing:.08em; text-shadow:0 0 22px rgba(210,220,255,.85),0 0 55px rgba(145,150,255,.45); opacity:0; transform:scale(.82); }
+.preSub { margin-top:12px; color:#dfe3ff; font-size:12px; opacity:0; }
+#preConfirm.show .preWhisper { animation:preWhisper 1.2s ease forwards; animation-delay:1.1s; }
+#preConfirm.show .preMain { animation:preMain 1.2s cubic-bezier(.2,.8,.2,1) forwards; animation-delay:8.0s; }
+#preConfirm.show .preSub { animation:preSub 1s ease forwards; animation-delay:8.2s; }
+#preConfirm.urHint .preMain { text-shadow:0 0 24px rgba(255,245,190,.95),0 0 65px rgba(255,225,120,.65); }
+@keyframes preFadeIn { from{opacity:0} to{opacity:1} }
+@keyframes preWhisper { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes preMain { 0%{opacity:0;transform:scale(.82)} 55%{opacity:1;transform:scale(1.08)} 100%{opacity:1;transform:scale(1)} }
+@keyframes preSub { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+#preConfirm::after { content:""; position:absolute; width:230px; height:230px; border-radius:50%; border:1px solid rgba(220,225,255,.14); box-shadow:0 0 60px rgba(180,190,255,.12), inset 0 0 50px rgba(180,190,255,.08); animation:preRing 6.5s ease-in-out infinite; pointer-events:none; }
+@keyframes preRing { 0%,100%{transform:scale(.84);opacity:.25} 50%{transform:scale(1.08);opacity:.8} }
+#stage.revealing {
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100svh;
+  min-height:100svh;
+  z-index:100;
+  border-radius:0;
+  margin:0;
+  padding:18px 14px calc(18px + env(safe-area-inset-bottom));
+  background:radial-gradient(circle at 50% 42%,rgba(43,50,105,.72),rgba(6,8,22,.97) 62%,#03040d 100%);
+}\n#slotGrid { position:absolute; inset:18px; display:grid; grid-template-columns:repeat(5,1fr); gap:8px; align-content:start; }
+.slot { height:86px; border-radius:12px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:#767b9e; font-weight:800; font-size:11px; transition:.35s; }
+.slot.active { border-color:rgba(255,255,255,.45); box-shadow:0 0 18px rgba(170,180,255,.3); transform:scale(1.03); }
+.slot.done { background:rgba(255,255,255,.07); }
+.slot.N { color:#d8d9e4; } .slot.R { color:#8fd2ff; } .slot.SR { color:#d8a4ff; }
+.slot.SSR { color:#ffd48c; } .slot.UR { color:#fff0a4; box-shadow:0 0 24px rgba(255,225,111,.5); }
+#spotlight { position:relative; z-index:8; width:min(84vw,310px); min-height:390px; display:none; }
+.card { width:100%; min-height:390px; border-radius:24px; padding:18px; position:relative; overflow:hidden; background:linear-gradient(145deg,#1c2144,#0d1025); border:2px solid rgba(255,255,255,.13); box-shadow:0 22px 70px rgba(0,0,0,.5); transform:scale(.86); opacity:0; }
+.card.show { animation:cardIn .5s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes cardIn { to { opacity:1; transform:scale(1); } }
+.card::before { content:""; position:absolute; width:170px;height:170px;border-radius:50%;right:-65px;top:-65px;background:rgba(255,255,255,.08); }
+.rarity { display:inline-block; border-radius:999px; padding:6px 10px; font-size:13px; font-weight:900; background:rgba(255,255,255,.1); }
+.art { margin:17px auto 14px; width:205px;height:205px;border-radius:50%; display:flex; align-items:center;justify-content:center; position:relative; background:radial-gradient(circle,#cbd1ff 0,#6b75ba 32%,#1a2044 70%); box-shadow:0 0 45px rgba(160,174,255,.25); }
+.art::after { content:"☾"; font-size:105px; color:rgba(255,255,255,.88); transform:rotate(-18deg); text-shadow:0 0 18px rgba(255,255,255,.65); }
+.lunaFace { position:absolute; bottom:24px; font-size:54px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+.name { font-size:20px; font-weight:900; text-align:center; }
+.quote { text-align:center; color:#c6cae6; font-size:13px; margin-top:9px; line-height:1.6; }
+.high .art { box-shadow:0 0 70px rgba(220,190,255,.55); }
+.SSR .art { background:radial-gradient(circle,#fff1c7 0,#a878d7 30%,#171a3c 72%); }
+.UR .art { width:220px;height:220px; background:radial-gradient(circle,#fffbe0 0,#c2b7ff 27%,#433f9a 55%,#11132e 78%); box-shadow:0 0 95px rgba(255,233,132,.8); }
+.UR { border-color:rgba(255,226,123,.75); }
+.promotion { position:absolute; z-index:10; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(5,6,18,.82); backdrop-filter:blur(5px); }
+.promotion.show { display:flex; animation:fade .25s ease-out; }
+@keyframes fade { from {opacity:0} to {opacity:1} }
+.promoText { font-size:30px; font-weight:1000; text-shadow:0 0 25px rgba(255,255,255,.75); animation:pop .7s ease-out; }
+@keyframes pop { 0%{transform:scale(.4);opacity:0} 60%{transform:scale(1.16)} 100%{transform:scale(1);opacity:1} }
+.promoSub { margin-top:8px;color:#dfe2ff;font-size:13px; }
+#result { display:none; margin-top:14px; animation:resultIn .55s cubic-bezier(.2,.8,.2,1); }
+@keyframes resultIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.resultTitle { text-align:center; font-size:18px; font-weight:900; margin-bottom:10px; }
+.resultList { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.resultItem { border-radius:12px; padding:10px; background:rgba(255,255,255,.06); }
+.resultItem b { font-size:11px; } .resultItem div { font-size:13px; font-weight:800; margin-top:3px; }
+.log { margin-top:5px; color:#8f94b6; font-size:10px; text-align:center; min-height:14px; }
+#skip { position:absolute; z-index:20; right:12px; bottom:12px; display:none; border:1px solid rgba(255,255,255,.18); color:white; background:rgba(0,0,0,.45); border-radius:999px; padding:8px 13px; }
+.note { color:#858aaa; text-align:center; font-size:10px; margin-top:7px; line-height:1.4; }
+@media (max-width:520px) { #stage{min-height:255px;height:255px} #stage.revealing{min-height:100svh;height:100svh} #slotGrid{inset:14px;gap:6px} .slot{height:78px;font-size:10px} #spotlight{width:82vw} }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="versionBadge">DEVELOPMENT BUILD　v5.7 DUAL TEST</div>
+    <div class="title">🌙 ルナガチャ</div>
+    <div class="sub">普通の日常 → 忘れられない一枚</div>
+  </div>
+  <div class="status">
+    <div class="pill">💎 石 <span id="stones">100</span></div>
+    <div class="pill">🎫 召喚 <span id="pulls">0</span></div>
+    <div class="pill">UR 1% / SSR 5% / SR 14%</div>
+  </div>
+  <div class="devTestWrap"><button id="comicalTestBtn" class="devTestBtn" type="button">🧪 コミカル演出テスト（UR確定）</button><button id="solemnTestBtn" class="devTestBtn" type="button">🌙 荘厳演出テスト（SSR確定）</button></div>
+  <div class="actions">
+    <button class="mainBtn secondary" id="oneBtn" type="button">1回召喚<br><small>💎10</small></button>
+    <button class="mainBtn" id="tenBtn" type="button">10連召喚<br><small>💎100</small></button>
+  </div>
+
+  <div class="panel">
+    <div id="result">
+      <div class="resultTitle">🌙 今回の召喚結果</div>
+      <div class="resultList" id="resultList"></div>
+    </div>
+    <div id="stage">
+      <div class="stars"></div><div class="moon" id="moon"></div>
+      <div id="slotGrid"></div>
+      <div id="spotlight"><div id="card" class="card"></div></div>
+      <div id="preConfirm"><div class="preWhisper">……特別な気配……</div><div class="preMain">✨ CONGRATULATIONS!! ✨</div><div class="preSub">月が、少しだけ近い。</div></div>
+      <div id="promotion" class="promotion">
+        <div class="promoText">✨ 昇格！！</div>
+        <div class="promoSub" id="promoSub">まだ終わらない……</div>
+      </div>
+      <button id="skip" type="button">SKIP</button>
+    </div>
+    <div class="log" id="log">10連は自動で1枚ずつ魅せます。</div>
+  </div>
+  <div class="note">※ SSR以上が含まれる10連では、約50%で特別演出。<br>残り約50%は、めくり中にサプライズ昇格します。</div>
+</div>
+
+<script>
+(function() {
+"use strict";
+
+const CARD_POOL = [{rarity:'N',name:'ルナ【ねむい】',quote:'……あと5分……'},{rarity:'N',name:'ルナ【通常運転】',quote:'まあ、なんとかなるっしょ'},{rarity:'R',name:'ルナ【夜さんぽ】',quote:'月、きれいじゃん'},{rarity:'R',name:'ルナ【ネコ発見】',quote:'……いた'},{rarity:'SR',name:'ルナ【風の音】',quote:'……なんか、落ち着く'},{rarity:'SR',name:'ルナ【お勉強中】',quote:'……やればできる、たぶん'},{rarity:'SSR',name:'ルナ【星降る夜】',quote:'……別に、嬉しくないけど'},{rarity:'SSR',name:'ルナ【月と、どこまでも】',quote:'きっと、また会えるよ'},{rarity:'UR',name:'ルナ【月を想う】',quote:'……あなた、来てくれたんだ'}];
+const weights = [{r:"N",w:50},{r:"R",w:30},{r:"SR",w:14},{r:"SSR",w:5},{r:"UR",w:1}];
+const rank = {N:0,R:1,SR:2,SSR:3,UR:4};
+
+let stones = 100, pulls = 0, busy = false, skipRequested = false;
+let currentCards = [], timer = null;
+
+const $ = id => document.getElementById(id);
+const stonesEl=$("stones"), pullsEl=$("pulls"), tenBtn=$("tenBtn"), oneBtn=$("oneBtn");
+const stage=$("stage"), grid=$("slotGrid"), spotlight=$("spotlight"), cardEl=$("card");
+const promo=$("promotion"), promoSub=$("promoSub"), skipBtn=$("skip"), preConfirmEl=$("preConfirm");
+const result=$("result"), resultList=$("resultList"), log=$("log"), moon=$("moon"), comicalTestBtn=$("comicalTestBtn"), solemnTestBtn=$("solemnTestBtn");
+
+function updateStatus() {
+  stonesEl.textContent=stones; pullsEl.textContent=pulls;
+  tenBtn.disabled=busy || stones<100; oneBtn.disabled=busy || stones<10;
+}
+
+function weightedRarity() {
+  const x=Math.random()*100; let s=0;
+  for(const v of weights) { s+=v.w; if(x<s) return v.r; }
+  return "N";
+}
+
+function pickCard(r) {
+  const list=CARD_POOL.filter(c=>c.rarity===r);
+  return list[Math.floor(Math.random()*list.length)] || CARD_POOL[0];
+}
+
+function drawOne() {
+  const r=weightedRarity();
+  return pickCard(r);
+}
+
+function buildSlots(n) {
+  grid.innerHTML="";
+  for(let i=0;i<n;i++) {
+    const s=document.createElement("div");
+    s.className="slot"; s.textContent=(i+1)+"枚目";
+    grid.appendChild(s);
+  }
+}
+
+function setSlot(i, r, done) {
+  const s=grid.children[i]; if(!s) return;
+  s.className="slot "+(done ? "done" : r+" active");
+  s.textContent=done ? "✓" : "OPEN";
+}
+
+function showCard(c, displayRarity, index) {
+  cardEl.className="card "+displayRarity+(rank[displayRarity]>=2?" high":"");
+  cardEl.innerHTML='<div class="rarity">'+displayRarity+'</div>'+
+    '<div class="art"><div class="lunaFace">🌙</div></div>'+
+    '<div class="name">'+c.name+'</div><div class="quote">'+c.quote+'</div>';
+  spotlight.style.display="block";
+  void cardEl.offsetWidth;
+  cardEl.classList.add("show");
+  moon.style.opacity = displayRarity==="UR" ? ".55" : displayRarity==="SSR" ? ".38" : displayRarity==="SR" ? ".28" : ".15";
+  if(displayRarity==="UR") moon.style.transform="scale(1.18)";
+  else moon.style.transform="scale(1)";
+}
+
+function sleep(ms) {
+  return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+async function playPreConfirm(highestRarity) {
+  preConfirmEl.classList.remove("urHint");
+  preConfirmEl.querySelector(".preMain").textContent="✨ CONGRATULATIONS!! ✨";
+  preConfirmEl.querySelector(".preSub").textContent="月が、少しだけ近い。";
+  if(highestRarity==="UR") {
+    preConfirmEl.classList.add("urHint");
+    preConfirmEl.querySelector(".preSub").textContent="……月の光が、もう一段強くなる。";
+  }
+  preConfirmEl.classList.add("show");
+  moon.style.opacity= ".24";
+  moon.style.transform="scale(.98)";
+  await sleep(1600);
+  if(skipRequested) return false;
+  log.textContent="";
+  await sleep(2500);
+  if(skipRequested) return false;
+  moon.style.opacity=highestRarity==="UR" ? ".95" : ".72";
+  moon.style.transform=highestRarity==="UR" ? "scale(1.25)" : "scale(1.15)";
+  await sleep(3900);
+  if(skipRequested) return false;
+  log.textContent="✨ CONGRATULATIONS!! ✨";
+  await sleep(2000);
+  if(skipRequested) return false;
+  preConfirmEl.classList.remove("show");
+  return true;
+}
+
+function clearTimers() {
+  if(timer) { clearTimeout(timer); timer=null; }
+}
+
+function playPromotion(finalRarity) {
+  promoSub.textContent = finalRarity+"まで、一気に昇格……！";
+  promo.classList.add("show");
+  return sleep(finalRarity==="UR"?1500:900).then(()=>{ promo.classList.remove("show"); });
+}
+
+function renderResults(cards) {
+  resultList.innerHTML="";
+  cards.forEach((c,i)=>{
+    const d=document.createElement("div"); d.className="resultItem "+c.rarity;
+    d.innerHTML="<b>"+(i+1)+"枚目　"+c.rarity+"</b><div>"+c.name+"</div>";
+    resultList.appendChild(d);
+  });
+  result.style.display="block";
+}
+
+async function revealTen() {
+  const hasHigh=currentCards.some(c=>rank[c.rarity]>=3);
+  const preConfirm=hasHigh && Math.random()<0.5;
+  skipRequested=false;
+  skipBtn.style.display="block";
+  result.style.display="none";
+  grid.style.display="none";
+  stage.classList.add("revealing");
+  spotlight.style.display="none";
+  log.textContent=preConfirm ? "🌙 月の光が強くなる……高レアの気配！" : "静かな夜。まだ何もわからない……";
+  if(preConfirm) {
+    const highest=currentCards.reduce((best,c)=>rank[c.rarity]>rank[best]?c.rarity:best,"N");
+    const played=await playPreConfirm(highest);
+    if(!played) return finishSkip();
+  } else {
+    await sleep(500);
+  }
+
+  for(let i=0;i<currentCards.length;i++) {
+    if(skipRequested) return finishSkip();
+    const c=currentCards[i];
+    setSlot(i,c.rarity,false);
+    spotlight.style.display="block";
+    cardEl.className="card";
+    cardEl.classList.remove("show");
+    const display = (!preConfirm && rank[c.rarity]>=2) ? 
+      (c.rarity==="UR"?"SSR":c.rarity==="SSR"?"SR":"R") : c.rarity;
+    showCard(c,display,i);
+    log.textContent=(i+1)+"枚目を召喚……";
+    if(rank[c.rarity]>=2) {{
+      stage.classList.add("highImpact");
+      setTimeout(()=>stage.classList.remove("highImpact"), 700);
+    }}
+    await sleep(display!==c.rarity ? 850 : (rank[c.rarity]>=3?1250:700));
+    if(skipRequested) return finishSkip();
+
+    if(display!==c.rarity) {
+      await playPromotion(c.rarity);
+      if(skipRequested) return finishSkip();
+      showCard(c,c.rarity,i);
+      log.textContent="✨ "+c.rarity+"を獲得！";
+      await sleep(c.rarity==="UR"?1500:850);
+    } else {
+      log.textContent=c.rarity+" "+c.name;
+      await sleep(c.rarity==="UR"?1550:650);
+    }
+    setSlot(i,c.rarity,true);
+    spotlight.style.display="none";
+  }
+  skipBtn.style.display="none";
+  finishNormal();
+}
+
+function finishNormal() {
+  grid.style.display="none";
+  spotlight.style.display="none";
+  promo.classList.remove("show");
+  preConfirmEl.classList.remove("show");
+  stage.classList.remove("revealing");
+  stage.style.display="none";
+  renderResults(currentCards);
+  moon.style.opacity=".18"; moon.style.transform="scale(1)";
+  log.textContent="召喚完了！";
+  busy=false; updateStatus();
+}
+
+function finishSkip() {
+  skipRequested=true;
+  grid.style.display="grid";
+  clearTimers();
+  currentCards.forEach((c,i)=>setSlot(i,c.rarity,true));
+  skipBtn.style.display="none";
+  stage.classList.remove("revealing");
+  spotlight.style.display="none"; promo.classList.remove("show");
+  stage.style.display="none";
+  renderResults(currentCards);
+  moon.style.opacity=".18"; moon.style.transform="scale(1)";
+  log.textContent="SKIP：結果を表示しました。";
+  busy=false; updateStatus();
+}
+
+async function tenPull() {
+  if(busy || stones<100) return;
+  busy=true; stones-=100; pulls+=10; updateStatus();
+  stage.style.display="flex";
+  stage.classList.remove("revealing");
+  currentCards=Array.from({length:10},drawOne);
+  buildSlots(10);
+  result.style.display="none";
+  stage.style.display="flex";
+  log.textContent="🌙 夜が静かに深くなる……";
+  moon.style.opacity=".32"; moon.style.transform="scale(.95)";
+  await sleep(650);
+  await revealTen();
+}
+
+async function solemnTest() {
+  if(busy) return;
+  busy=true;
+  skipRequested=false;
+
+  // Developer test only: force a 10-pull containing one SSR.
+  // The solemn confirmation route is forced so it can be tested without waiting for RNG.
+  currentCards=Array.from({length:10},drawOne);
+  currentCards[0]={
+    rarity:"SSR",
+    name:"ルナ【星降る夜】",
+    quote:"……別に、嬉しくないけど"
+  };
+
+  stage.style.display="flex";
+  stage.classList.remove("revealing","highImpact");
+  result.style.display="none";
+  grid.style.display="none";
+  spotlight.style.display="none";
+  promo.classList.remove("show");
+  preConfirmEl.classList.remove("show");
+  skipBtn.style.display="none";
+  moon.style.opacity="0";
+  moon.style.transform="scale(.9)";
+  log.textContent="🧪 荘厳演出テスト……";
+
+  // Force the solemn confirmation itself; rarity remains hidden from the player-facing message.
+  const played=await playPreConfirm("SSR");
+  if(!played) return finishSkip();
+
+  stage.classList.add("revealing");
+  grid.style.display="none";
+  spotlight.style.display="none";
+  result.style.display="none";
+  log.textContent="🌙 10連召喚……";
+
+  for(let i=0;i<currentCards.length;i++) {
+    if(skipRequested) return finishSkip();
+    const c=currentCards[i];
+    setSlot(i,c.rarity,false);
+    spotlight.style.display="block";
+    cardEl.className="card";
+    cardEl.classList.remove("show");
+    showCard(c,c.rarity,i);
+    log.textContent=(i+1)+"枚目を召喚……";
+
+    if(rank[c.rarity]>=2) {
+      stage.classList.add("highImpact");
+      setTimeout(()=>stage.classList.remove("highImpact"),700);
+    }
+
+    await sleep(rank[c.rarity]>=3?1250:700);
+    if(skipRequested) return finishSkip();
+
+    log.textContent=c.rarity+" "+c.name;
+    await sleep(c.rarity==="UR"?1550:650);
+    setSlot(i,c.rarity,true);
+    spotlight.style.display="none";
+  }
+
+  skipBtn.style.display="none";
+  finishNormal();
+}
+
+async function onePull() {
+  if(busy || stones<10) return;
+  busy=true; stones-=10; pulls+=1; updateStatus();
+  stage.style.display="flex";
+  currentCards=[drawOne()];
+  buildSlots(1);
+  stage.classList.remove("revealing");
+  log.textContent="🌙 ルナを召喚……";
+  await sleep(500);
+  const c=currentCards[0];
+  setSlot(0,c.rarity,false);
+  showCard(c,c.rarity,0);
+  await sleep(c.rarity==="UR"?1700:c.rarity==="SSR"?1300:800);
+  setSlot(0,c.rarity,true);
+  spotlight.style.display="none";
+  renderResults(currentCards);
+  log.textContent="召喚完了！";
+  busy=false; updateStatus();
+}
+
+
+async function comicalTest() {
+  if(busy) return;
+  busy=true;
+  skipRequested=false;
+
+  // Developer test only: force a 10-pull containing one UR.
+  currentCards=Array.from({length:10},drawOne);
+  currentCards[0]={
+    rarity:"UR",
+    name:"ルナ【月を想う】",
+    quote:"……あなた、来てくれたんだ"
+  };
+
+  // Comical route is independent from the solemn SSR+ confirmation.
+  stage.style.display="flex";
+  stage.classList.remove("revealing","highImpact");
+  result.style.display="none";
+  grid.style.display="none";
+  spotlight.style.display="none";
+  promo.classList.remove("show");
+  preConfirmEl.classList.remove("show");
+  skipBtn.style.display="none";
+  moon.style.opacity="0";
+  moon.style.transform="scale(.9)";
+  log.textContent="🧪 コミカル演出テスト……";
+
+  // Comical confirmation: about 5.5 sec total before the 10-card reveal.
+  // Keep the rarity hidden; the player gets the hint through Luna's reaction
+  // and the shared CONGRATULATIONS!! message.
+  await sleep(800);
+  log.textContent="……？";
+  await sleep(800);
+  log.textContent="👋 おおあたりぃー！";
+  await sleep(900);
+  log.textContent="おおあたりぃー！";
+  await sleep(900);
+  log.textContent="✨ CONGRATULATIONS!! ✨";
+  await sleep(2100);
+
+  // Hide all pre-reveal elements, then enter the normal 10-card reveal
+  // while explicitly bypassing the solemn pre-confirm route.
+  stage.classList.add("revealing");
+  grid.style.display="none";
+  spotlight.style.display="none";
+  result.style.display="none";
+  log.textContent="🌙 10連召喚……";
+
+  // Reveal cards manually so revealTen() cannot trigger solemn confirmation.
+  for(let i=0;i<currentCards.length;i++) {
+    if(skipRequested) return finishSkip();
+    const c=currentCards[i];
+    setSlot(i,c.rarity,false);
+    spotlight.style.display="block";
+    cardEl.className="card";
+    cardEl.classList.remove("show");
+    showCard(c,c.rarity,i);
+    log.textContent=(i+1)+"枚目を召喚……";
+
+    if(rank[c.rarity]>=2) {
+      stage.classList.add("highImpact");
+      setTimeout(()=>stage.classList.remove("highImpact"),700);
+    }
+
+    await sleep(rank[c.rarity]>=3?1250:700);
+    if(skipRequested) return finishSkip();
+
+    log.textContent=c.rarity+" "+c.name;
+    await sleep(c.rarity==="UR"?1550:650);
+    setSlot(i,c.rarity,true);
+    spotlight.style.display="none";
+  }
+
+  skipBtn.style.display="none";
+  finishNormal();
+}
+tenBtn.addEventListener("click",tenPull);
+oneBtn.addEventListener("click",onePull);
+skipBtn.addEventListener("click",()=>{ if(busy) skipRequested=true; });
+comicalTestBtn.addEventListener("click",comicalTest);
+solemnTestBtn.addEventListener("click",solemnTest);
+
+buildSlots(10);
+grid.style.display="none";
+updateStatus();
+})();
+</script>
+</body>
+</html>
