@@ -146,11 +146,49 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 @keyframes urGoldOut{to{opacity:0;transform:translate(-50%,-50%) scale(.82)}}
 
 /* 10-pull launch */
-#tenStart{position:absolute;inset:0;z-index:35;display:none;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle at 50% 45%,rgba(54,48,102,.7),rgba(5,6,18,.97) 72%);opacity:0}.tenStart.show{display:flex;animation:tenStartIn .9s ease-out forwards}.tenCards{position:relative;width:min(86vw,430px);height:180px}.fanCard{position:absolute;left:50%;top:50%;width:76px;height:118px;border-radius:12px;border:1px solid rgba(255,228,142,.65);background:linear-gradient(145deg,#1b2048,#0b0d22);box-shadow:0 10px 24px rgba(0,0,0,.45),0 0 18px rgba(255,221,117,.12);transform-origin:50% 90%;display:flex;align-items:center;justify-content:center;color:#f8dfa0;font-size:30px}.tenStartTitle{font-size:clamp(28px,8vw,48px);font-weight:1000;color:#fff4c4;text-shadow:0 0 24px rgba(255,226,128,.65);margin-top:8px}.tenStartSub{font-size:12px;color:#cfd3f0;margin-top:7px}@keyframes tenStartIn{to{opacity:1}}
+#tenStart{position:absolute;inset:0;z-index:35;display:none;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle at 50% 45%,rgba(54,48,102,.7),rgba(5,6,18,.97) 72%);opacity:0}.tenStart.show{display:flex;animation:tenStartIn .9s ease-out forwards}.tenCards{position:relative;width:min(94vw,760px);height:230px}.fanCard{position:absolute;left:50%;top:50%;width:clamp(56px,10vw,88px);height:clamp(88px,16vw,132px);border-radius:12px;border:1px solid rgba(255,228,142,.72);background:radial-gradient(circle at 50% 42%,rgba(255,224,116,.16),transparent 34%),linear-gradient(145deg,#202956,#090c22);box-shadow:0 10px 24px rgba(0,0,0,.5),0 0 18px rgba(255,221,117,.14);transform-origin:50% 90%;display:flex;align-items:center;justify-content:center;color:#f8dfa0;font-size:clamp(22px,4vw,32px);overflow:hidden}.fanCard:before{content:'☾';position:absolute;inset:7px;border:1px solid rgba(255,224,133,.38);border-radius:9px;display:flex;align-items:center;justify-content:center;text-shadow:0 0 14px rgba(255,235,151,.8)}.fanCard span{position:relative;z-index:2}.tenStartTitle{font-size:clamp(28px,8vw,48px);font-weight:1000;color:#fff4c4;text-shadow:0 0 24px rgba(255,226,128,.65);margin-top:8px}.tenStartSub{font-size:12px;color:#cfd3f0;margin-top:7px}@keyframes tenStartIn{to{opacity:1}}
 .resultOverlay{position:fixed;inset:0;width:100vw;height:100dvh;min-height:100dvh;z-index:200;display:none;align-items:flex-start;justify-content:center;background:radial-gradient(circle at 50% 35%,rgba(70,65,140,.72),rgba(4,5,15,.985) 72%);padding:calc(10px + env(safe-area-inset-top)) 12px calc(10px + env(safe-area-inset-bottom));box-sizing:border-box;overflow:hidden;overscroll-behavior:contain}.resultOverlay.show{display:flex}.resultOverlayInner{width:min(920px,96vw);height:100%;max-height:100%;overflow-y:auto;box-sizing:border-box;text-align:center;padding:2px 0 10px;margin:0 auto}.resultOverlayTitle{font-size:clamp(25px,7vw,46px);font-weight:1000;color:#fff4c4;text-shadow:0 0 24px rgba(255,226,128,.55);line-height:1.1}.resultOverlaySub{margin-top:4px;color:#aeb4d6;font-size:10px}.resultOverlayList{margin:12px auto 0;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:min(880px,94vw)}.resultCard{min-height:104px;border-radius:15px;padding:8px 6px;background:linear-gradient(145deg,rgba(32,38,78,.96),rgba(10,12,29,.96));border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 25px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:center;align-items:center}.resultCard .rr{font-size:12px;font-weight:1000}.resultCard .rn{font-size:10px;font-weight:900;line-height:1.3;margin-top:5px}.resultCard.UR{box-shadow:0 0 30px rgba(255,224,105,.55);border-color:rgba(255,229,125,.75);background:linear-gradient(145deg,rgba(64,52,92,.98),rgba(15,12,34,.98))}.resultCard.SSR{box-shadow:0 0 24px rgba(255,201,112,.3);border-color:rgba(255,211,139,.5)}.resultOverlayActions{display:flex;gap:9px;width:min(520px,94vw);margin:12px auto 0;padding-bottom:2px}.resultOverlayActions .mainBtn{padding:11px}.resultOverlayActions .secondary{background:linear-gradient(135deg,#26345d,#465581)}
 @media(max-width:700px){.resultOverlayList{grid-template-columns:repeat(2,1fr);gap:6px;margin-top:10px}.resultCard{min-height:78px;padding:6px 5px;border-radius:13px}.resultCard .rr{font-size:11px}.resultCard .rn{font-size:8.5px;margin-top:3px}.resultOverlayActions{margin-top:10px}.resultOverlayActions .mainBtn{padding:10px 7px;font-size:13px}.resultOverlayTitle{font-size:clamp(24px,7vw,36px)}.resultOverlaySub{font-size:9px}}
-@media(orientation:landscape) and (min-width:700px){.hero{min-height:250px}.heroContent{min-height:250px}.section{margin-top:8px}}
-@media(orientation:landscape) and (max-height:600px){#app{max-width:none;padding:6px 10px}.hero{min-height:210px}.heroContent{min-height:210px;padding:18px 20px}.heroChibi{width:180px;right:18%;bottom:-5px}.status{margin:7px 2px}.section{padding:10px}.resultOverlayList{grid-template-columns:repeat(5,1fr);gap:7px}.resultCard{min-height:92px;padding:7px 4px}.resultOverlayActions{margin-top:12px}.resultOverlayInner{max-height:96vh}.resultOverlayTitle{font-size:30px}}
+@media(orientation:landscape) and (min-width:700px){
+  #app{max-width:1180px;padding:12px 18px 22px}
+  .hero{min-height:250px}
+  .heroContent{min-height:250px}
+  .section{margin-top:8px}
+}
+@media(orientation:landscape) and (max-height:700px){
+  body{overflow-x:hidden}
+  #app{max-width:none;padding:6px 12px 12px}
+  .hero{min-height:190px;height:190px}
+  .heroContent{min-height:190px;height:190px;padding:16px 22px}
+  .heroChibi{width:170px;right:15%;bottom:-6px}
+  .heroQuote{max-width:52%}
+  .status{margin:6px 2px}
+  .section{padding:10px;margin-top:7px}
+  .actions{gap:8px}
+  .mainBtn{padding:10px 12px}
+  #stage.revealing{padding:10px 14px;min-height:100dvh;height:100dvh}
+  .paperPuppet{left:50%;bottom:10%;width:min(34vw,300px);height:min(76dvh,430px);max-height:none}
+  .paperPuppetQuestion{left:57%;top:24%;font-size:clamp(18px,3.2vw,30px)}
+  .paperPuppetText{top:44%;font-size:clamp(30px,5.2vw,62px)}
+  #skip{right:16px;bottom:14px}
+  .resultOverlay{padding:calc(8px + env(safe-area-inset-top)) 18px calc(8px + env(safe-area-inset-bottom));}
+  .resultOverlayInner{width:min(1120px,96vw);height:100dvh;max-height:100dvh;padding-bottom:8px}
+  .resultOverlayList{grid-template-columns:repeat(5,1fr);gap:8px;width:min(1080px,96vw);margin-top:10px}
+  .resultCard{min-height:78px;padding:6px 5px}
+  .resultCard .rr{font-size:11px}.resultCard .rn{font-size:9px;margin-top:3px}
+  .resultOverlayActions{width:min(560px,70vw);margin-top:9px}
+  .resultOverlayTitle{font-size:clamp(28px,4.2vw,40px)}
+  .resultOverlaySub{font-size:10px}
+}
+@media(orientation:landscape) and (max-height:480px){
+  .hero{min-height:150px;height:150px}.heroContent{min-height:150px;height:150px;padding:10px 18px}.heroChibi{width:130px;right:14%;}
+  .brand{font-size:20px}.tagline{font-size:8px}.heroQuote{font-size:11px}.heroQuote small{font-size:8px}.startBtn{padding:7px 10px;font-size:11px}
+  .status{font-size:10px}.section{padding:8px}.section h2{font-size:14px}
+  .paperPuppet{width:min(31vw,250px);height:72dvh;bottom:7%}
+  .resultCard{min-height:64px}.resultCard .rr{font-size:10px}.resultCard .rn{font-size:8px}
+  .resultOverlayActions .mainBtn{padding:8px 10px;font-size:12px}
+}
+
 #skip{position:absolute;z-index:50;right:12px;bottom:12px;display:none;border:1px solid rgba(255,255,255,.2);color:#fff;background:rgba(0,0,0,.5);border-radius:999px;padding:9px 14px}.result{display:none;margin-top:12px}.resultTitle{text-align:center;font-size:18px;font-weight:900;margin-bottom:10px}.resultList{display:grid;grid-template-columns:1fr 1fr;gap:8px}.resultItem{border-radius:12px;padding:10px;background:rgba(255,255,255,.06)}.resultItem b{font-size:11px}.resultItem div{font-size:13px;font-weight:900;margin-top:3px}.log{text-align:center;color:#9da3c7;font-size:10px;min-height:15px;margin-top:6px}.note{text-align:center;color:#858aaa;font-size:10px;line-height:1.5;margin:9px 4px 0}.footer{margin-top:12px;text-align:center;color:#6e7395;font-size:9px;letter-spacing:.12em}.footer b{color:#c9b77d}
 @media(max-width:560px){#app{padding:8px 9px 18px}.hero{min-height:300px}.heroContent{min-height:300px;padding:22px 17px}.heroChibi{right:7%;width:205px;opacity:.94}.heroQuote{max-width:55%}.heroTag{right:4%}.actions{gap:6px}.mainBtn{padding:12px 5px;font-size:14px}#stage.revealing{padding-top:calc(14px + env(safe-area-inset-top));padding-bottom:calc(14px + env(safe-area-inset-bottom))}.fanCard{width:59px;height:94px;font-size:24px}.tenCards{height:145px}}
 @media(max-width:560px){.paperPuppet{width:min(66vw,290px);max-height:43svh;bottom:16%}.paperPuppetQuestion{left:69%;top:27%}.paperPuppetText{top:43%;font-size:clamp(28px,8vw,58px)}}
@@ -160,29 +198,29 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 .paperPuppetStage{position:absolute;inset:0;z-index:40;pointer-events:none;display:none;overflow:hidden}
 .paperPuppetStage.on{display:block}
 /* v5.32: rod is baked into each PNG; no separate stick layer */
-.paperPuppet{position:absolute;z-index:2;left:50%;bottom:17%;width:min(60vw,300px);max-height:46svh;object-fit:contain;transform-origin:50% 100%;opacity:0;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55)) drop-shadow(0 0 16px rgba(255,255,255,.35));will-change:transform,opacity}
+.paperPuppet{position:absolute;z-index:2;left:50%;bottom:17%;width:min(60vw,300px);height:46svh;object-fit:contain;object-position:center bottom;transform:translate(-50%,0) rotate(0deg) scale(1);transform-origin:50% 100%;opacity:0;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55)) drop-shadow(0 0 16px rgba(255,255,255,.35));will-change:transform,opacity}
 .paperPuppet.normal{animation:none}.paperPuppet.peace{display:none}
-@keyframes puppetEnter{0%{opacity:0;transform:translate(75%,22%) rotate(7deg) scale(.72)}55%{opacity:1;transform:translate(-46%,-2%) rotate(-2deg) scale(1.03)}75%{transform:translate(-52%,0) rotate(1deg) scale(1.01)}100%{opacity:1;transform:translate(-50%,0) rotate(0) scale(1)}}
+@keyframes puppetEnter{0%{opacity:0;left:112%;transform:translate(-50%,8%) rotate(5deg) scale(.78)}45%{opacity:1;left:60%;transform:translate(-50%,-1%) rotate(-2deg) scale(1.02)}72%{left:51%;transform:translate(-50%,0) rotate(1deg) scale(1.01)}100%{opacity:1;left:50%;transform:translate(-50%,0) rotate(0) scale(1)}}
 @keyframes puppetBounce{0%,100%{transform:translate(-50%,0) rotate(0)}35%{transform:translate(-50%,-7px) rotate(-1deg)}70%{transform:translate(-50%,0) rotate(1deg)}}
 @keyframes puppetTurnOut{0%{opacity:1;transform:translate(-50%,0) rotateY(0deg) scale(1)}50%{opacity:1;transform:translate(-50%,0) rotateY(90deg) scale(1.02)}100%{opacity:0;transform:translate(-50%,0) rotateY(180deg) scale(1)}}
 @keyframes puppetTurnIn{0%{opacity:1;transform:translate(-50%,0) rotateY(-90deg) scale(1.02)}50%{opacity:1;transform:translate(-50%,0) rotateY(-45deg) scale(1.01)}100%{opacity:1;transform:translate(-50%,0) rotateY(0deg) scale(1)}}
-/* v5.34: single-image puppet flip — no overlapping poses, no teleporting */
-.paperPuppet{backface-visibility:hidden;-webkit-backface-visibility:hidden;perspective:900px}
+/* v5.37: fixed puppet wrapper + 2D squash flip — two master poses only */
+.paperPuppet{backface-visibility:hidden;-webkit-backface-visibility:hidden;perspective:none}
 @keyframes puppetFlip{
-  0%{opacity:1;transform:translate(-50%,0) rotateY(0deg) rotate(0deg) scale(1)}
-  42%{opacity:1;transform:translate(-50%,0) rotateY(78deg) rotate(-1deg) scale(1.01)}
-  50%{opacity:0;transform:translate(-50%,0) rotateY(90deg) rotate(0deg) scale(1)}
-  58%{opacity:1;transform:translate(-50%,0) rotateY(102deg) rotate(1deg) scale(1.01)}
-  100%{opacity:1;transform:translate(-50%,0) rotateY(180deg) rotate(0deg) scale(1)}
+  0%{opacity:1;transform:translate(-50%,0) rotate(0deg) scaleX(1) scaleY(1)}
+  35%{opacity:1;transform:translate(-50%,-1px) rotate(-1deg) scaleX(.55) scaleY(1.01)}
+  50%{opacity:1;transform:translate(-50%,0) rotate(0deg) scaleX(.06) scaleY(1)}
+  65%{opacity:1;transform:translate(-50%,-1px) rotate(1deg) scaleX(.55) scaleY(1.01)}
+  100%{opacity:1;transform:translate(-50%,0) rotate(0deg) scaleX(1) scaleY(1)}
 }
 @keyframes puppetFlipBack{
-  0%{opacity:1;transform:translate(-50%,0) rotateY(180deg) rotate(0deg) scale(1)}
-  42%{opacity:1;transform:translate(-50%,0) rotateY(102deg) rotate(1deg) scale(1.01)}
-  50%{opacity:0;transform:translate(-50%,0) rotateY(90deg) rotate(0deg) scale(1)}
-  58%{opacity:1;transform:translate(-50%,0) rotateY(78deg) rotate(-1deg) scale(1.01)}
-  100%{opacity:1;transform:translate(-50%,0) rotateY(0deg) rotate(0deg) scale(1)}
+  0%{opacity:1;transform:translate(-50%,0) rotate(0deg) scaleX(1) scaleY(1)}
+  35%{opacity:1;transform:translate(-50%,-1px) rotate(1deg) scaleX(.55) scaleY(1.01)}
+  50%{opacity:1;transform:translate(-50%,0) rotate(0deg) scaleX(.06) scaleY(1)}
+  65%{opacity:1;transform:translate(-50%,-1px) rotate(-1deg) scaleX(.55) scaleY(1.01)}
+  100%{opacity:1;transform:translate(-50%,0) rotate(0deg) scaleX(1) scaleY(1)}
 }
-@keyframes puppetExit{0%{opacity:1;transform:translate(-50%,0) rotate(0) scale(1)}35%{transform:translate(-42%,-4px) rotate(-2deg) scale(1.03)}100%{opacity:0;transform:translate(135%,-8%) rotate(8deg) scale(.7)}}
+@keyframes puppetExit{0%{opacity:1;left:50%;transform:translate(-50%,0) rotate(0) scale(1)}45%{opacity:1;left:72%;transform:translate(-50%,-2%) rotate(2deg) scale(.96)}100%{opacity:0;left:112%;transform:translate(-50%,8%) rotate(6deg) scale(.78)}}
 .paperPuppetText{position:absolute;z-index:5;left:50%;top:45%;transform:translate(-50%,-50%) scale(.6);opacity:0;white-space:nowrap;font-weight:1000;letter-spacing:.04em;color:#ffd85c;text-shadow:0 3px 0 #8b4b00,0 0 10px rgba(255,196,35,.9),0 0 24px rgba(255,240,120,.7);font-size:clamp(30px,8vw,68px)}
 .paperPuppetText.on{animation:puppetWinText .55s cubic-bezier(.18,.9,.25,1.25) forwards}.paperPuppetText.exit{animation:puppetTextExit .35s ease-in forwards}
 @keyframes puppetWinText{to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
@@ -190,6 +228,20 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 .paperPuppetQuestion{position:absolute;z-index:6;left:67%;top:30%;font-size:clamp(18px,4vw,32px);font-weight:900;color:#fff;opacity:0;text-shadow:0 0 10px #000,0 0 16px rgba(255,255,255,.7);transform:translateY(8px) scale(.8)}
 .paperPuppetQuestion.on{animation:qIn .35s ease-out forwards}.paperPuppetQuestion.exit{animation:qOut .3s ease-in forwards}
 @keyframes qIn{to{opacity:1;transform:translateY(0) scale(1)}}@keyframes qOut{to{opacity:0;transform:translateY(-5px) scale(.85)}}
+
+/* v5.37 — two-pose master: fixed wrapper prevents intrinsic-image teleport/overlap */
+.paperPuppetStage{z-index:60!important}
+.paperPuppetFrame{position:absolute;z-index:2;left:50%;bottom:17%;width:min(60vw,300px);height:46svh;transform:translate(-50%,0) rotate(0deg) scale(1);transform-origin:50% 100%;opacity:0;will-change:transform,opacity;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55)) drop-shadow(0 0 16px rgba(255,255,255,.35))}
+.paperPuppetFrame .paperPuppet{position:absolute;inset:0;width:100%;height:100%;max-height:none;object-fit:contain;object-position:center bottom;transform:none!important;opacity:1!important;filter:none;will-change:auto}
+@keyframes puppetFrameEnter{0%{opacity:0;transform:translate(75%,22%) rotate(7deg) scale(.72)}55%{opacity:1;transform:translate(-46%,-2%) rotate(-2deg) scale(1.03)}75%{transform:translate(-52%,0) rotate(1deg) scale(1.01)}100%{opacity:1;transform:translate(-50%,0) rotate(0) scale(1)}}
+@keyframes puppetFrameBounce{0%,100%{transform:translate(-50%,0) rotate(0)}35%{transform:translate(-50%,-7px) rotate(-1deg)}70%{transform:translate(-50%,0) rotate(1deg)}}
+@keyframes puppetFrameFlip{0%{opacity:1;transform:translate(-50%,0) rotate(0) scaleX(1)}42%{opacity:1;transform:translate(-50%,-1px) rotate(-1deg) scaleX(.08)}50%{opacity:1;transform:translate(-50%,0) rotate(0) scaleX(.025)}58%{opacity:1;transform:translate(-50%,-1px) rotate(1deg) scaleX(.08)}100%{opacity:1;transform:translate(-50%,0) rotate(0) scaleX(1)}}
+@keyframes puppetFrameExit{0%{opacity:1;transform:translate(-50%,0) rotate(0) scale(1)}100%{opacity:0;transform:translate(72%,-8%) rotate(6deg) scale(.72)}}
+.paperPuppetQuestion{z-index:7!important}
+#urAwaken .paperPuppetStage.on ~ #urAwakenChibi,#urAwaken .paperPuppetStage.on ~ #urSpeech,#urAwaken .paperPuppetStage.on ~ #urCongratsGold,#urAwaken .paperPuppetStage.on ~ #urGoldShine{display:none!important}
+@media(orientation:landscape) and (max-height:700px){.paperPuppetFrame{left:50%;bottom:10%;width:min(34vw,300px);height:min(76dvh,430px)}}
+@media(orientation:landscape) and (max-height:480px){.paperPuppetFrame{width:min(31vw,250px);height:72dvh;bottom:7%}}
+@media(max-width:560px){.paperPuppetFrame{width:min(66vw,290px);height:43svh;bottom:16%}}
 </style>
 </head>
 <body>
@@ -198,7 +250,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
     <div class="heroMoon"></div><div class="heroCat"></div>
     <div class="heroContent">
       <div>
-        <div class="brand"><span class="versionBadge">v5.34 • CHIBI LUNA TURN FIX + RESULT</span><br>ルナ<span class="brandMoon">🌙</span>ガチャ</div>
+        <div class="brand"><span class="versionBadge">v5.36 • PUPPET MASTER 01/02 + LANDSCAPE</span><br>ルナ<span class="brandMoon">🌙</span>ガチャ</div>
         <div class="tagline">A SMALL MOON, A BIG ENCOUNTER.</div>
         <div class="heroQuote">小さな月がくれる、特別な出会い。<small>いつもの日常に、ひとつだけ特別な夜を。</small></div>
         <button class="startBtn" id="startBtn" type="button">🌙 ガチャをはじめる</button>
@@ -243,7 +295,9 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
             <div class="urSparkles"></div>
             <div class="urGlints"></div>
             <div class="paperPuppetStage" id="paperPuppetStage">
-              <img class="paperPuppet normal" id="paperPuppetNormal" src="assets/puppet/01_normal.png" alt="チビルナ">
+              <div class="paperPuppetFrame" id="paperPuppetFrame">
+                <img class="paperPuppet" id="paperPuppetNormal" src="assets/puppet/01_normal.png" alt="チビルナ">
+              </div>
               <div class="paperPuppetQuestion" id="paperPuppetQuestion">……？</div>
               <div class="paperPuppetText" id="paperPuppetText">おおあたりぃー！！</div>
             </div>
@@ -277,8 +331,8 @@ function weightedRarity(){let x=Math.random()*100,s=0;for(const v of weights){s+
 function pickCard(r){const a=CARD_POOL.filter(c=>c.rarity===r);return a[Math.floor(Math.random()*a.length)]||CARD_POOL[0]}
 function drawOne(){return pickCard(weightedRarity())}
 
-// Chibi Luna Theater: fixed 16-pose registry. All assets share one visual standard.
-const CHIBI_POSES={normal:'01_normal',peace:'02_peace',surprised:'03_surprised',smile:'04_smile',wink:'05_wink',sad:'06_sad',angry:'07_angry',cheer:'08_cheer',sleep:'09_sleep',back:'10_back',jump:'11_jump',bothHandsUp:'12_both_hands_up',oneHandUp:'13_one_hand_up',deadpan:'14_deadpan',roar:'15_roar',crouch:'16_crouch'};
+// Chibi Luna Theater: master 01/02 assets. Both use the exact same canvas and baseline.
+const CHIBI_POSES={normal:'01_normal',peace:'02_peace'};
 const CHIBI_ASSET_BASE='assets/puppet/';
 function chibiSrc(key){return CHIBI_ASSET_BASE+CHIBI_POSES[key]+'.png'}
 function preloadChibiPoses(){preload(Object.values(CHIBI_POSES).map(n=>CHIBI_ASSET_BASE+n+'.png')).catch(()=>{})}
@@ -295,7 +349,7 @@ function playSeqKeep(img,arr,duration,fit='cover'){if(!arr.length)return;if(img.
 function makeParticles(mode){const field=$('particleField');field.innerHTML='';const colors=['#fff','#ffe66d','#5df7ff','#ff6bd8','#9a7cff','#72ff9e'];const base=mode==='A'?15.2:9.2;for(let i=0;i<150;i++){const e=document.createElement('span');e.className='particle';const a=Math.random()*Math.PI*2,r=80+Math.random()*360;e.style.setProperty('--x',(5+Math.random()*90)+'%');e.style.setProperty('--y',(5+Math.random()*90)+'%');e.style.setProperty('--sx',(Math.cos(a)*r).toFixed(1)+'px');e.style.setProperty('--sy',(Math.sin(a)*r).toFixed(1)+'px');e.style.setProperty('--mx',((Math.random()-.5)*120).toFixed(1)+'px');e.style.setProperty('--my',((Math.random()-.5)*120).toFixed(1)+'px');e.style.setProperty('--ex',((Math.random()-.5)*360).toFixed(1)+'px');e.style.setProperty('--ey',((Math.random()-.5)*280).toFixed(1)+'px');e.style.setProperty('--s',(1.4+Math.random()*5.8).toFixed(1)+'px');e.style.setProperty('--c',colors[i%colors.length]);e.style.setProperty('--delay',(base+Math.random()*7).toFixed(2)+'s');field.appendChild(e)}}
 function resetFx(){fx.classList.remove('oneImageMode');const awaken=$('urAwaken');if(awaken)awaken.classList.remove('on','hide');['urAwakenBg','urAwakenChibi','urSpeech','urCongratsGold','urGoldShine'].forEach(id=>{const e=$(id);if(e){e.classList.remove('on');e.style.animation='none';e.style.opacity='0'}});const sh=awaken&&awaken.querySelector('.urAwakenShade'),li=awaken&&awaken.querySelector('.urLight'),sp=awaken&&awaken.querySelector('.urSparkles'),gl=awaken&&awaken.querySelector('.urGlints');[sh,li,sp,gl].forEach(e=>{if(e){e.classList.remove('on');e.style.animation='none';e.style.opacity='0'}});const inner=fx.querySelector('.fxInner');if(inner){inner.classList.remove('premiumShake')}for(const id of ['putyun','rainbowBurst','rainbowShower','congrats']){const e=$(id);if(e._raf)cancelAnimationFrame(e._raf);e.style.opacity='0';e.removeAttribute('src')}fx.className='';$('particleField').innerHTML='';fx.querySelectorAll('.rainbowTint,.rainbowField,.rainbowBands,.rainbowBloom,.rainbowMask').forEach(e=>e.classList.remove('grow'));
 fx.querySelectorAll('.rainbowField,.rainbowBands,.rainbowBloom,.rainbowMask').forEach(e=>{e.style.opacity='0'});fx.querySelectorAll('.ray').forEach(e=>e.style.opacity='0');document.querySelectorAll('.chibi,.speech,.congratsText').forEach(e=>{e.classList.remove('exit');e.style.animation='none';e.style.opacity='0'});const sil=fx.querySelector('.silence');if(sil)sil.style.opacity='1';const ps=$('paperPuppetStage');if(ps)ps.classList.remove('on','turning');for(const id of ['paperPuppetNormal','paperPuppetQuestion','paperPuppetText']){const e=$(id);if(e){e.style.animation='none';e.style.opacity='0';e.classList.remove('on','exit')}}}
-function buildTenStart(){const box=$('tenCards');box.innerHTML='';for(let i=0;i<10;i++){const c=document.createElement('div');c.className='fanCard';const angle=-34+i*7.6,dx=(i-4.5)*19; c.style.transform=`translate(-50%,-50%) translateX(${dx}px) rotate(${angle}deg)`;c.textContent='☾';box.appendChild(c)}}
+function buildTenStart(){const box=$('tenCards');box.innerHTML='';for(let i=0;i<10;i++){const c=document.createElement('div');c.className='fanCard';const angle=-34+i*7.6,dx=(i-4.5)*19; c.style.transform=`translate(-50%,-50%) translateX(${dx}px) rotate(${angle}deg)`;c.innerHTML='<span>✦</span>';box.appendChild(c)}}
 async function showTenStart(){buildTenStart();tenStart.classList.add('show');await sleep(1500);tenStart.classList.remove('show')}
 async function finishPremium(){resetFx();skipBtn.style.display='none';await showTenStart();await revealComicalCards()}
 async function playComical(){
@@ -305,9 +359,9 @@ async function playComical(){
  currentCards[0]={rarity:'UR',name:'ルナ【月を想う】',quote:'……あなた、来てくれたんだ'};
  stage.style.display='flex';stage.classList.add('revealing');resultOverlay.classList.remove('show');grid.style.display='none';spotlight.style.display='none';skipBtn.style.display='block';moon.style.opacity='0';resetFx();
  fx.classList.add('show','oneImageMode');
- const awaken=$('urAwaken'),put=$('urPutyun'),bg=$('urAwakenBg'),shade=awaken.querySelector('.urAwakenShade'),light=awaken.querySelector('.urLight'),spark=awaken.querySelector('.urSparkles'),glints=awaken.querySelector('.urGlints'),chibi=$('urAwakenChibi'),speech=$('urSpeech'),gold=$('urCongratsGold'),shine=$('urGoldShine'); const puppetStage=$('paperPuppetStage'),puppetNormal=$('paperPuppetNormal'),puppetQ=$('paperPuppetQuestion'),puppetText=$('paperPuppetText');
+ const awaken=$('urAwaken'),put=$('urPutyun'),bg=$('urAwakenBg'),shade=awaken.querySelector('.urAwakenShade'),light=awaken.querySelector('.urLight'),spark=awaken.querySelector('.urSparkles'),glints=awaken.querySelector('.urGlints'),chibi=$('urAwakenChibi'),speech=$('urSpeech'),gold=$('urCongratsGold'),shine=$('urGoldShine'); const puppetStage=$('paperPuppetStage'),puppetFrame=$('paperPuppetFrame'),puppetNormal=$('paperPuppetNormal'),puppetQ=$('paperPuppetQuestion'),puppetText=$('paperPuppetText');
  awaken.classList.remove('hide');awaken.classList.add('on');
- [put,bg,shade,light,spark,glints,chibi,speech,gold,shine,puppetNormal,puppetQ,puppetText].forEach(e=>{e.classList.remove('on','exit');e.style.animation='none';e.style.opacity='0'}); puppetStage.classList.remove('on'); puppetNormal.style.display='block'; chibi.style.display='none'; speech.style.display='none'; gold.style.display='none'; shine.style.display='none';
+ [put,bg,shade,light,spark,glints,chibi,speech,gold,shine,puppetFrame,puppetQ,puppetText].forEach(e=>{e.classList.remove('on','exit');e.style.animation='none';e.style.opacity='0'}); puppetNormal.style.opacity='1'; puppetNormal.style.display='block'; puppetStage.classList.remove('on'); puppetFrame.style.display='block'; puppetNormal.style.display='block'; puppetFrame.style.opacity='0'; puppetNormal.style.opacity='1'; chibi.style.display='none'; speech.style.display='none'; gold.style.display='none'; shine.style.display='none';
  bg.style.animation='';shade.style.animation='';light.style.animation='';spark.style.animation='';glints.style.animation='';chibi.style.animation='';speech.style.animation='';gold.style.animation='';shine.style.animation='';
  log.textContent='……';
  // 1. プチュン：用意済みの18フレーム素材を短く使い、最後は完全ブラックへ。
@@ -336,22 +390,23 @@ async function playComical(){
  await waitSkip(1600);if(skipRequested)return finishSkip();
  // 4. チビルナ劇場：紙人形として登場。
  playSfx('footsteps.mp3');
- puppetStage.classList.add('on');
- puppetNormal.style.animation='puppetEnter 1.15s cubic-bezier(.18,.86,.2,1) forwards';
+ puppetStage.classList.add('on'); puppetFrame.style.display='block'; puppetFrame.style.opacity='1';
+ puppetFrame.style.animation='puppetFrameEnter 1.15s cubic-bezier(.18,.86,.2,1) forwards';
  await waitSkip(1150);if(skipRequested)return finishSkip();
  log.textContent='……？'; puppetQ.classList.add('on');
- puppetNormal.style.animation='puppetBounce 1.1s ease-in-out infinite';
+ puppetFrame.style.animation='puppetFrameBounce 1.1s ease-in-out infinite';
  await waitSkip(1250);if(skipRequested)return finishSkip();
  puppetQ.classList.remove('on'); puppetQ.classList.add('exit');
  // 5. くるっ！：1枚の紙人形だけを裏返し、中央で絵を差し替える。
  // 2枚を重ねないので二重表示もワープも起こさない。
  puppetStage.classList.add('turning');
- puppetNormal.style.animation='puppetFlip .72s ease-in-out forwards';
- await waitSkip(350);if(skipRequested)return finishSkip();
+ puppetFrame.style.animation='puppetFrameFlip .72s ease-in-out forwards';
+ await waitSkip(360);if(skipRequested)return finishSkip();
  puppetNormal.src=chibiSrc('peace');
- await waitSkip(370);if(skipRequested)return finishSkip();
- puppetNormal.style.animation='none';
- puppetNormal.style.opacity='1';
+ await waitSkip(360);if(skipRequested)return finishSkip();
+ puppetFrame.style.animation='none';
+ puppetFrame.style.transform='translate(-50%,0) rotate(0deg) scale(1)';
+ puppetFrame.style.opacity='1';
  puppetStage.classList.remove('turning');
  puppetText.classList.add('on'); log.textContent='おおあたりぃー！！';
  playSfx('kyuin.mp3');
@@ -359,23 +414,24 @@ async function playComical(){
  // 6. オチ：文字が消え、同じ紙人形がもう一度くるっ。
  puppetText.classList.remove('on'); puppetText.classList.add('exit');
  puppetStage.classList.add('turning');
- puppetNormal.style.animation='puppetFlipBack .72s ease-in-out forwards';
- await waitSkip(350);if(skipRequested)return finishSkip();
+ puppetFrame.style.animation='puppetFrameFlip .72s ease-in-out forwards';
+ await waitSkip(360);if(skipRequested)return finishSkip();
  puppetNormal.src=chibiSrc('normal');
- await waitSkip(370);if(skipRequested)return finishSkip();
- puppetNormal.style.animation='none';
- puppetNormal.style.opacity='1';
+ await waitSkip(360);if(skipRequested)return finishSkip();
+ puppetFrame.style.animation='none';
+ puppetFrame.style.transform='translate(-50%,0) rotate(0deg) scale(1)';
+ puppetFrame.style.opacity='1';
  puppetStage.classList.remove('turning');
- puppetNormal.style.animation='puppetBounce 1.0s ease-in-out';
+ puppetFrame.style.animation='puppetFrameBounce 1.0s ease-in-out';
  await waitSkip(700);if(skipRequested)return finishSkip();
  // 亜種セリフはまず仮実装：画面ログだけで、次版で吹き出しを正式化する。
  log.textContent='……だよねぇー？';
  await waitSkip(1500);if(skipRequested)return finishSkip();
  // 7. ぴゅーん！
  playSfx('pyuun.mp3');
- puppetNormal.style.animation='puppetExit 0.9s cubic-bezier(.55,.05,.75,.4) forwards';
+ puppetFrame.style.animation='puppetFrameExit 0.9s cubic-bezier(.55,.05,.75,.4) forwards';
  await waitSkip(900);if(skipRequested)return finishSkip();
- puppetStage.classList.remove('on');
+ puppetStage.classList.remove('on'); puppetFrame.style.opacity='0'; puppetFrame.style.animation='none';
   awaken.classList.remove('on');
   fx.classList.remove('show','oneImageMode');
   await sleep(260);
@@ -392,7 +448,7 @@ function showResultOverlay(cards){
 }
 
 async function tenPull(){if(busy||stones<100)return;resultOverlay.classList.remove('show');busy=true;stones-=100;pulls+=10;updateStatus();currentCards=Array.from({length:10},drawOne);buildSlots(10);stage.style.display='flex';result.style.display='none';grid.style.display='none';stage.classList.add('revealing');log.textContent='🌙 夜が静かに深くなる……';await sleep(500);await revealTen()}
-async function revealTen(){const high=currentCards.some(c=>rank[c.rarity]>=3),pre=high&&Math.random()<.5;skipRequested=false;skipBtn.style.display='block';if(pre){log.textContent='🌙 月の光が強くなる……';await solemnConfirm();if(skipRequested)return finishSkip()}else await sleep(400);for(let i=0;i<currentCards.length;i++){if(skipRequested)return finishSkip();const c=currentCards[i];setSlot(i,c.rarity,false);showCard(c,c.rarity);log.textContent=(i+1)+'枚目を召喚……';await sleep(rank[c.rarity]>=3?1250:700);if(skipRequested)return finishSkip();log.textContent=c.rarity+' '+c.name;await sleep(c.rarity==='UR'?1550:650);setSlot(i,c.rarity,true);spotlight.style.display='none'}finishNormal()}
+async function revealTen(){const high=currentCards.some(c=>rank[c.rarity]>=3),pre=high&&Math.random()<.5;skipRequested=false;skipBtn.style.display='block';if(pre){log.textContent='🌙 月の光が強くなる……';await solemnConfirm();if(skipRequested)return finishSkip()}else await sleep(400);await showTenStart();if(skipRequested)return finishSkip();for(let i=0;i<currentCards.length;i++){if(skipRequested)return finishSkip();const c=currentCards[i];setSlot(i,c.rarity,false);showCard(c,c.rarity);log.textContent=(i+1)+'枚目を召喚……';await sleep(rank[c.rarity]>=3?1250:700);if(skipRequested)return finishSkip();log.textContent=c.rarity+' '+c.name;await sleep(c.rarity==='UR'?1550:650);setSlot(i,c.rarity,true);spotlight.style.display='none'}finishNormal()}
 async function solemnConfirm(){const overlay=document.createElement('div');overlay.style.cssText='position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:radial-gradient(circle at 50% 45%,rgba(55,60,120,.3),rgba(2,3,10,.97) 70%)';overlay.innerHTML='<div style="font-size:13px;letter-spacing:.2em;color:#b9c2ea;opacity:.9">……特別な気配……</div><div style="margin-top:22px;font-size:34px;font-weight:1000;letter-spacing:.08em;text-shadow:0 0 26px rgba(220,225,255,.85)">✨ CONGRATULATIONS!! ✨</div><div style="margin-top:12px;font-size:12px;color:#dfe3ff">月が、少しだけ近い。</div>';stage.appendChild(overlay);await sleep(1600);await sleep(2500);await sleep(3900);if(skipRequested){overlay.remove();return}await sleep(2000);overlay.remove()}
 async function onePull(){if(busy||stones<10)return;busy=true;stones-=10;pulls++;updateStatus();currentCards=[drawOne()];buildSlots(1);stage.style.display='flex';stage.classList.add('revealing');setSlot(0,currentCards[0].rarity,false);showCard(currentCards[0],currentCards[0].rarity);log.textContent='🌙 ルナを召喚……';await sleep(currentCards[0].rarity==='UR'?1700:currentCards[0].rarity==='SSR'?1300:800);setSlot(0,currentCards[0].rarity,true);finishNormal()}
 resultAgain.addEventListener('click',()=>{resultOverlay.classList.remove('show');tenBtn.click()});resultHome.addEventListener('click',()=>{resultOverlay.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})});startBtn.addEventListener('click',()=>document.getElementById('gachaPanel').scrollIntoView({behavior:'smooth',block:'start'}));oneBtn.addEventListener('click',onePull);tenBtn.addEventListener('click',tenPull);skipBtn.addEventListener('click',()=>{if(busy)skipRequested=true});$('comicalBTestBtn').addEventListener('click',()=>playComical());$('solemnTestBtn').addEventListener('click',async()=>{if(busy)return;busy=true;skipRequested=false;currentCards=Array.from({length:10},drawOne);currentCards[0]={rarity:'SSR',name:'ルナ【星降る夜】',quote:'……別に、嬉しくないけど'};buildSlots(10);stage.style.display='flex';stage.classList.add('revealing');grid.style.display='none';spotlight.style.display='none';skipBtn.style.display='block';log.textContent='🧪 荘厳演出テスト……';await solemnConfirm();if(skipRequested)return finishSkip();await revealComicalCards()});
