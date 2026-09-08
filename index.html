@@ -247,7 +247,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 #tenStart{z-index:9999!important;position:fixed!important;isolation:isolate}
 #tenStart.show{display:flex!important;visibility:visible!important;opacity:1!important;animation:none!important}
 .paperPuppetFrame{perspective:900px}
-@keyframes puppetFrameFlipV542{0%{opacity:1;transform:translate(-50%,0) rotateY(0deg) rotateZ(0deg) scale(1)}20%{opacity:1;transform:translate(-50%,-3px) rotateY(55deg) rotateZ(-1.5deg) scale(1.02)}40%{opacity:1;transform:translate(-50%,-6px) rotateY(88deg) rotateZ(0deg) scaleX(.08) scaleY(1.02)}50%{opacity:1;transform:translate(-50%,-6px) rotateY(90deg) rotateZ(0deg) scaleX(.035) scaleY(1) }60%{opacity:1;transform:translate(-50%,-5px) rotateY(92deg) rotateZ(0deg) scaleX(.08) scaleY(1.02)}80%{opacity:1;transform:translate(-50%,-3px) rotateY(145deg) rotateZ(1.5deg) scale(1.02)}100%{opacity:1;transform:translate(-50%,0) rotateY(180deg) rotateZ(0deg) scale(1)}}
+@keyframes puppetFrameFlipV543{0%{opacity:1;transform:translate(-50%,0) rotateY(0deg) rotateZ(0deg) scale(1)}18%{opacity:1;transform:translate(-50%,-1px) rotateY(38deg) rotateZ(-0.8deg) scale(1.01)}34%{opacity:1;transform:translate(-50%,-2px) rotateY(72deg) rotateZ(-1.4deg) scale(1.015)}46%{opacity:1;transform:translate(-50%,-3px) rotateY(90deg) rotateZ(0deg) scaleX(.055) scaleY(1.015)}58%{opacity:1;transform:translate(-50%,-2px) rotateY(118deg) rotateZ(.8deg) scaleX(.16) scaleY(1.01)}76%{opacity:1;transform:translate(-50%,-1px) rotateY(164deg) rotateZ(1.2deg) scale(1.01)}100%{opacity:1;transform:translate(-50%,0) rotateY(180deg) rotateZ(0deg) scale(1)}}20%{opacity:1;transform:translate(-50%,-3px) rotateY(55deg) rotateZ(-1.5deg) scale(1.02)}40%{opacity:1;transform:translate(-50%,-6px) rotateY(88deg) rotateZ(0deg) scaleX(.08) scaleY(1.02)}50%{opacity:1;transform:translate(-50%,-6px) rotateY(90deg) rotateZ(0deg) scaleX(.035) scaleY(1) }60%{opacity:1;transform:translate(-50%,-5px) rotateY(92deg) rotateZ(0deg) scaleX(.08) scaleY(1.02)}80%{opacity:1;transform:translate(-50%,-3px) rotateY(145deg) rotateZ(1.5deg) scale(1.02)}100%{opacity:1;transform:translate(-50%,0) rotateY(180deg) rotateZ(0deg) scale(1)}}
 </style>
 </head>
 <body>
@@ -256,7 +256,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
     <div class="heroMoon"></div><div class="heroCat"></div>
     <div class="heroContent">
       <div>
-        <div class="brand"><span class="versionBadge">v5.42 • PUPPET SPIN + FAN OVERLAY</span><br>ルナ<span class="brandMoon">🌙</span>ガチャ</div>
+        <div class="brand"><span class="versionBadge">v5.43 • PUPPET SPIN + FAN OVERLAY</span><br>ルナ<span class="brandMoon">🌙</span>ガチャ</div>
         <div class="tagline">A SMALL MOON, A BIG ENCOUNTER.</div>
         <div class="heroQuote">小さな月がくれる、特別な出会い。<small>いつもの日常に、ひとつだけ特別な夜を。</small></div>
         <button class="startBtn" id="startBtn" type="button">🌙 ガチャをはじめる</button>
@@ -406,10 +406,10 @@ async function playComical(){
  // 5. くるっ！：1枚の紙人形だけを裏返し、中央で絵を差し替える。
  // 2枚を重ねないので二重表示もワープも起こさない。
  puppetStage.classList.add('turning');
- puppetFrame.style.animation='puppetFrameFlipV542 .95s ease-in-out forwards';
- await waitSkip(360);if(skipRequested)return finishSkip();
+ puppetFrame.style.animation='puppetFrameFlipV543 .55s cubic-bezier(.22,.82,.24,1) forwards';
+ await waitSkip(275);if(skipRequested)return finishSkip();
  puppetNormal.src=chibiSrc('peace');
- await waitSkip(360);if(skipRequested)return finishSkip();
+ await waitSkip(275);if(skipRequested)return finishSkip();
  puppetFrame.style.animation='none';
  puppetFrame.style.transform='translate(-50%,0) rotateY(0deg) rotateZ(0deg) scale(1)';
  puppetFrame.style.opacity='1';
@@ -420,10 +420,10 @@ async function playComical(){
  // 6. オチ：文字が消え、同じ紙人形がもう一度くるっ。
  puppetText.classList.remove('on'); puppetText.classList.add('exit');
  puppetStage.classList.add('turning');
- puppetFrame.style.animation='puppetFrameFlipV542 .95s ease-in-out forwards';
- await waitSkip(360);if(skipRequested)return finishSkip();
+ puppetFrame.style.animation='puppetFrameFlipV543 .55s cubic-bezier(.22,.82,.24,1) forwards';
+ await waitSkip(275);if(skipRequested)return finishSkip();
  puppetNormal.src=chibiSrc('normal');
- await waitSkip(360);if(skipRequested)return finishSkip();
+ await waitSkip(275);if(skipRequested)return finishSkip();
  puppetFrame.style.animation='none';
  puppetFrame.style.transform='translate(-50%,0) rotateY(0deg) rotateZ(0deg) scale(1)';
  puppetFrame.style.opacity='1';
