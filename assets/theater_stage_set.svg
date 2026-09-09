@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+<defs>
+ <radialGradient id="bg" cx="50%" cy="48%"><stop offset="0" stop-color="#31366e"/><stop offset=".5" stop-color="#171a3b"/><stop offset="1" stop-color="#070817"/></radialGradient>
+ <linearGradient id="cur" x1="0" x2="1"><stop stop-color="#2d0718"/><stop offset=".45" stop-color="#8e1d35"/><stop offset="1" stop-color="#3c091d"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff4a8"/><stop offset=".45" stop-color="#e7ad42"/><stop offset="1" stop-color="#8e5420"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="stars" width="120" height="100" patternUnits="userSpaceOnUse"><circle cx="18" cy="23" r="2" fill="#fff4b0"/><circle cx="77" cy="62" r="1.5" fill="#fff"/><circle cx="104" cy="18" r="1" fill="#9fdcff"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<rect x="150" y="95" width="1300" height="690" rx="18" fill="url(#stars)" opacity=".38"/>
+<circle cx="800" cy="360" r="130" fill="#fff3bf" opacity=".94" filter="url(#glow)"/>
+<circle cx="835" cy="330" r="130" fill="#20234b"/>
+<path d="M0 0H330V900H0Z" fill="url(#cur)"/><path d="M1600 0H1270V900H1600Z" fill="url(#cur)"/>
+<path d="M0 0H370L250 900H0Z" fill="#210716" opacity=".75"/><path d="M1600 0H1230L1350 900H1600Z" fill="#210716" opacity=".75"/>
+<path d="M0 55 Q800 145 1600 55 L1600 0H0Z" fill="#6d1530"/>
+<path d="M0 0H1600V120Q800 195 0 120Z" fill="#9a2841" opacity=".55"/>
+<g fill="url(#gold)" stroke="#5d3415" stroke-width="5">
+ <path d="M115 150h180l-32 55H147z"/><path d="M1305 150h180l-32 55h-116z"/>
+</g>
+<g fill="#fff0a0" opacity=".9">
+ <path d="M125 250l9 21 23 2-18 15 5 23-19-12-20 12 6-23-18-15 23-2z"/>
+ <path d="M1475 250l9 21 23 2-18 15 5 23-19-12-20 12 6-23-18-15 23-2z"/>
+ <path d="M300 230l7 17 19 1-14 12 4 19-16-10-16 10 4-19-14-12 19-1z"/>
+ <path d="M1300 230l7 17 19 1-14 12 4 19-16-10-16 10 4-19-14-12 19-1z"/>
+</g>
+<path d="M190 720 Q800 650 1410 720 L1500 900H100Z" fill="#351d29" stroke="#c48c42" stroke-width="10"/>
+<path d="M220 755 Q800 700 1380 755 L1320 900H280Z" fill="#0b0d20"/>
+<rect x="410" y="100" width="780" height="115" rx="28" fill="#21162a" stroke="#e2ad4e" stroke-width="9"/>
+<rect x="430" y="120" width="740" height="75" rx="20" fill="#11152d" stroke="#7f4c23" stroke-width="3"/>
+<text x="800" y="176" text-anchor="middle" fill="url(#gold)" font-family="sans-serif" font-size="58" font-weight="900" letter-spacing="5">ちびるなげきじょう</text>
+<g fill="#fff2a2"><circle cx="465" cy="158" r="7"/><circle cx="1135" cy="158" r="7"/></g>
+</svg>
