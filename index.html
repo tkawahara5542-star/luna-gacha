@@ -399,7 +399,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
         <button id="heroSolemnBtn" class="heroUtilityBtn" type="button">🌙 荘厳演出テスト</button>
       </div>
       <div class="devDock" aria-label="開発用操作">
-        <span class="versionCorner">v5.57 • DEV</span>
+        <span class="versionCorner">v5.58 • DEV</span>
         <button id="force演出Btn" class="devDockBtn" type="button">🧪 演出強制</button>
       </div>
     </div>
@@ -588,6 +588,9 @@ async function revealTenFanSequence(){buildTenStart();tenStart.classList.remove(
 async function finishPremium(){resetFx();skipBtn.style.display='none';await revealTenFanSequence();finishNormal()}
 async function playComical(){
   if(busy)return; busy=true; skipRequested=false;
+  // v5.58: comedy演出 is a true full-screen takeover, not a local stage-area overlay.
+  stage.style.display='flex';
+  stage.classList.add('revealing');
   resetFx(); fx.classList.add('show','oneImageMode');
   const awaken=$('urAwaken'), put=$('urPutyun'), bg=$('urAwakenBg'), shade=awaken.querySelector('.urAwakenShade'), light=awaken.querySelector('.urLight'), spark=awaken.querySelector('.urSparkles'), glints=awaken.querySelector('.urGlints');
   const puppetStage=$('paperPuppetStage'), puppetFrame=$('paperPuppetFrame'), puppetNormal=$('paperPuppetNormal'), puppetQ=$('paperPuppetQuestion'), puppetText=$('paperPuppetText');
