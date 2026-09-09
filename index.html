@@ -152,6 +152,25 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 @keyframes urGoldOut{to{opacity:0;transform:translate(-50%,-50%) scale(.82)}}
 
 
+/* v5.52 — DEVELOPMENT TOP: 月を想う key visual mockup */
+.hero{background-image:linear-gradient(180deg,rgba(5,8,22,.06),rgba(5,8,22,.16)),url("assets/top_dev_month_omou.png");background-size:cover;background-position:center;border-color:rgba(255,255,255,.16)}
+.hero:before,.hero:after,.heroMoon,.heroCat,.heroChibi,.heroChibiTag{display:none!important}
+.heroContent{padding:0;min-height:100%;height:100%;display:block}
+.heroContent>div:first-child{display:none}
+.heroTopResource{position:absolute;right:25%;top:18px;z-index:7;min-width:178px;padding:8px 14px;border-radius:999px;background:rgba(7,10,24,.72);border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 25px rgba(0,0,0,.25);backdrop-filter:blur(7px);color:#fff5ca;font-weight:900;font-size:13px;text-align:center}
+.heroTopResource small{font-size:9px;color:#cfd4ee;font-weight:700}
+.heroActionRow{position:absolute;left:20%;right:20%;bottom:74px;z-index:8;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.heroGachaBtn{border:1px solid rgba(255,238,190,.8);border-radius:18px;padding:13px 16px;background:linear-gradient(135deg,rgba(40,82,151,.94),rgba(34,48,101,.94));color:#fff;font-weight:1000;font-size:18px;line-height:1.1;box-shadow:0 10px 28px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.18)}
+.heroGachaBtn.gold{background:linear-gradient(135deg,rgba(205,157,59,.96),rgba(113,76,22,.96));color:#fff8df}
+.heroGachaBtn small{display:block;margin-top:5px;font-size:13px}
+.heroUtilityRow{position:absolute;left:20%;right:20%;bottom:15px;z-index:8;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.heroUtilityBtn{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 10px;background:rgba(7,10,24,.72);color:#fff4cf;font-weight:900;font-size:11px;backdrop-filter:blur(6px);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.heroUtilityBtn:hover,.heroGachaBtn:hover,.devDockBtn:hover{filter:brightness(1.08)}
+.devDock{position:absolute;left:20px;bottom:15px;z-index:10;display:flex;align-items:center;gap:7px}
+.versionCorner{font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.86);padding:6px 8px;border-radius:999px;background:rgba(4,6,18,.76);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+.devDockBtn{border:1px dashed rgba(255,231,151,.55);background:rgba(8,10,24,.78);color:#fff1b9;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;backdrop-filter:blur(6px)}
+@media(max-width:900px) and (orientation:landscape){.heroTopResource{right:18px;top:12px}.heroActionRow,.heroUtilityRow{left:18%;right:18%}.heroActionRow{bottom:68px;gap:9px}.heroGachaBtn{padding:10px 10px;font-size:14px}.heroGachaBtn small{font-size:11px}.heroUtilityBtn{font-size:9px;padding:7px 8px}.devDock{left:12px;bottom:12px}}
+
 /* v5.49 — LANDSCAPE FOUNDATION: horizontal is the canonical layout. Vertical remains untouched. */
 @media (orientation:landscape) and (min-width:900px){
   #app{
@@ -323,6 +342,8 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
   78%{opacity:1;transform:translate(-50%,0) rotateY(165deg) rotateZ(0.6deg) scale(1.01)}
   100%{opacity:1;transform:translate(-50%,0) rotateY(180deg) rotateZ(0deg) scale(1)}
 }
+/* v5.52 final top-page sizing */
+@media (orientation:landscape){.hero{height:min(68vh,560px);min-height:320px}.heroContent{height:100%;min-height:100%}}
 </style>
 
 <!-- v5.45: puppet spin tuning baseline. -->
@@ -346,21 +367,23 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 </head>
 <body>
 <div id="app">
-  <section class="hero">
-    <div class="heroMoon"></div><div class="heroCat"></div>
+  <section class="hero" aria-label="開発中トップ画面 月を想う">
     <div class="heroContent">
-      <div>
-        <div class="brand"><span class="versionBadge">v5.51 • COLLECTION SKELETON</span><br>ルナ<span class="brandMoon">🌙</span>ガチャ</div>
-        <div class="tagline">A SMALL MOON, A BIG ENCOUNTER.</div>
-        <div class="heroQuote">小さな月がくれる、特別な出会い。<small>いつもの日常に、ひとつだけ特別な夜を。</small></div>
-        <button class="startBtn" id="startBtn" type="button">🌙 ガチャをはじめる</button>
+      <div class="heroTopResource">💎 月のかけら　<b id="heroStones">3000</b><br><small>開発中・実データ連動</small></div>
+      <div class="heroActionRow">
+        <button id="heroOneBtn" class="heroGachaBtn" type="button">1回召喚<small>💎300</small></button>
+        <button id="heroTenBtn" class="heroGachaBtn gold" type="button">10連召喚<small>💎3000</small></button>
+      </div>
+      <div class="heroUtilityRow">
+        <button id="heroCollectionBtn" class="heroUtilityBtn" type="button">📖 カード図鑑</button>
+        <button id="heroChargeBtn" class="heroUtilityBtn" type="button">✨ 無料チャージ ＋3000</button>
+        <button id="heroSolemnBtn" class="heroUtilityBtn" type="button">🌙 荘厳演出テスト</button>
       </div>
       <div class="devDock" aria-label="開発用操作">
-        <span class="versionCorner">v5.51 • DEV</span>
+        <span class="versionCorner">v5.52 • DEV</span>
         <button id="force演出Btn" class="devDockBtn" type="button">🧪 演出強制</button>
       </div>
     </div>
-    <img class="heroChibi" src="assets/chibi_luna.png" alt="チビルナ">
   </section>
 
   <div class="status">
@@ -458,7 +481,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 const CARD_POOL=[{rarity:'N',name:'ルナ【ねむい】',quote:'……あと5分……'},{rarity:'N',name:'ルナ【通常運転】',quote:'まあ、なんとかなるっしょ'},{rarity:'R',name:'ルナ【夜さんぽ】',quote:'月、きれいじゃん'},{rarity:'R',name:'ルナ【ネコ発見】',quote:'……いた'},{rarity:'SR',name:'ルナ【風の音】',quote:'……なんか、落ち着く'},{rarity:'SR',name:'ルナ【お勉強中】',quote:'……やればできる、たぶん'},{rarity:'SSR',name:'ルナ【星降る夜】',quote:'……別に、嬉しくないけど'},{rarity:'SSR',name:'ルナ【月と、どこまでも】',quote:'きっと、また会えるよ'},{rarity:'UR',name:'ルナ【月を想う】',quote:'……あなた、来てくれたんだ'}];
 const weights=[{r:'N',w:50},{r:'R',w:30},{r:'SR',w:14},{r:'SSR',w:5},{r:'UR',w:1}],rank={N:0,R:1,SR:2,SSR:3,UR:4};
 let stones=3000,pulls=0,busy=false,skipRequested=false,currentCards=[];
-const $=id=>document.getElementById(id), stonesEl=$('stones'),pullsEl=$('pulls'),oneBtn=$('oneBtn'),tenBtn=$('tenBtn'),stage=$('stage'),grid=$('slotGrid'),spotlight=$('spotlight'),cardEl=$('card'),skipBtn=$('skip'),result=$('result'),resultList=$('resultList'),resultOverlay=$('resultOverlay'),resultOverlayList=$('resultOverlayList'),resultAgain=$('resultAgain'),resultHome=$('resultHome'),log=$('log'),moon=$('moon'),fx=$('comicalFx'),startBtn=$('startBtn'),tenStart=$('tenStart'),freeChargeBtn=$('freeChargeBtn'),force演出Btn=$('force演出Btn');
+const $=id=>document.getElementById(id), stonesEl=$('stones'),pullsEl=$('pulls'),oneBtn=$('oneBtn'),tenBtn=$('tenBtn'),stage=$('stage'),grid=$('slotGrid'),spotlight=$('spotlight'),cardEl=$('card'),skipBtn=$('skip'),result=$('result'),resultList=$('resultList'),resultOverlay=$('resultOverlay'),resultOverlayList=$('resultOverlayList'),resultAgain=$('resultAgain'),resultHome=$('resultHome'),log=$('log'),moon=$('moon'),fx=$('comicalFx'),tenStart=$('tenStart'),freeChargeBtn=$('freeChargeBtn'),force演出Btn=$('force演出Btn');
 const collectionOpenBtn=$('collectionOpenBtn'),collectionBackBtn=$('collectionBackBtn'),collectionView=$('collectionView'),collectionGrid=$('collectionGrid'),collectionCountEl=$('collectionCount'),collectionMiniCount=$('collectionMiniCount'),collectionDetail=$('collectionDetail'),collectionDetailArt=$('collectionDetailArt'),collectionDetailRarity=$('collectionDetailRarity'),collectionDetailName=$('collectionDetailName'),collectionDetailQuote=$('collectionDetailQuote'),collectionDetailCount=$('collectionDetailCount'),collectionDetailClose=$('collectionDetailClose'),collectionFilters=$('collectionFilters');
 const COLLECTION_KEY='luna_gacha_collection_v1';
 let collectionData=loadCollection();let collectionFilter='ALL';
@@ -619,7 +642,7 @@ async function revealTen(){const high=currentCards.some(c=>rank[c.rarity]>=3),pr
 async function solemnConfirm(){const overlay=document.createElement('div');overlay.style.cssText='position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:radial-gradient(circle at 50% 45%,rgba(55,60,120,.3),rgba(2,3,10,.97) 70%)';overlay.innerHTML='<div style="font-size:13px;letter-spacing:.2em;color:#b9c2ea;opacity:.9">……特別な気配……</div><div style="margin-top:22px;font-size:34px;font-weight:1000;letter-spacing:.08em;text-shadow:0 0 26px rgba(220,225,255,.85)">✨ CONGRATULATIONS!! ✨</div><div style="margin-top:12px;font-size:12px;color:#dfe3ff">月が、少しだけ近い。</div>';stage.appendChild(overlay);await sleep(1600);await sleep(2500);await sleep(3900);if(skipRequested){overlay.remove();return}await sleep(2000);overlay.remove()}
 async function onePull(){if(busy||stones<300)return;busy=true;stones-=300;pulls++;updateStatus();currentCards=[drawOne()];registerCards(currentCards);buildSlots(1);stage.style.display='flex';stage.classList.add('revealing');setSlot(0,currentCards[0].rarity,false);showCard(currentCards[0],currentCards[0].rarity);log.textContent='🌙 ルナを召喚……';await sleep(currentCards[0].rarity==='UR'?1700:currentCards[0].rarity==='SSR'?1300:800);setSlot(0,currentCards[0].rarity,true);finishNormal()}
 collectionOpenBtn.addEventListener('click',openCollection);collectionBackBtn.addEventListener('click',closeCollection);collectionDetailClose.addEventListener('click',closeCollectionDetail);collectionDetail.addEventListener('click',e=>{if(e.target===collectionDetail)closeCollectionDetail()});collectionFilters.addEventListener('click',e=>{const b=e.target.closest('.collectionFilter');if(!b)return;collectionFilter=b.dataset.filter;renderCollection()});
-resultAgain.addEventListener('click',()=>{resultOverlay.classList.remove('show');tenBtn.click()});resultHome.addEventListener('click',()=>{resultOverlay.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})});startBtn.addEventListener('click',()=>document.getElementById('gachaPanel').scrollIntoView({behavior:'smooth',block:'start'}));oneBtn.addEventListener('click',onePull);tenBtn.addEventListener('click',tenPull);skipBtn.addEventListener('click',()=>{if(busy)skipRequested=true});freeChargeBtn.addEventListener('click',()=>{if(busy)return;stones+=3000;updateStatus();log.textContent='✨ 無料チャージ！月のかけら＋3000';});force演出Btn.addEventListener('click',()=>{if(!busy)playComical()});$('comicalBTestBtn').addEventListener('click',()=>playComical());$('solemnTestBtn').addEventListener('click',async()=>{if(busy)return;busy=true;skipRequested=false;currentCards=Array.from({length:10},drawOne);currentCards[0]={rarity:'SSR',name:'ルナ【星降る夜】',quote:'……別に、嬉しくないけど'};buildSlots(10);stage.style.display='flex';stage.classList.add('revealing');grid.style.display='none';spotlight.style.display='none';skipBtn.style.display='block';log.textContent='🧪 荘厳演出テスト……';await solemnConfirm();if(skipRequested)return finishSkip();await revealComicalCards()});
+resultAgain.addEventListener('click',()=>{resultOverlay.classList.remove('show');tenBtn.click()});resultHome.addEventListener('click',()=>{resultOverlay.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})});oneBtn.addEventListener('click',onePull);tenBtn.addEventListener('click',tenPull);document.getElementById('heroOneBtn').addEventListener('click',onePull);document.getElementById('heroTenBtn').addEventListener('click',tenPull);document.getElementById('heroCollectionBtn').addEventListener('click',()=>document.getElementById('collectionOpenBtn').click());document.getElementById('heroChargeBtn').addEventListener('click',()=>freeChargeBtn.click());document.getElementById('heroSolemnBtn').addEventListener('click',()=>document.getElementById('solemnTestBtn').click());skipBtn.addEventListener('click',()=>{if(busy)skipRequested=true});freeChargeBtn.addEventListener('click',()=>{if(busy)return;stones+=3000;updateStatus();log.textContent='✨ 無料チャージ！月のかけら＋3000';});force演出Btn.addEventListener('click',()=>{if(!busy)playComical()});$('comicalBTestBtn').addEventListener('click',()=>playComical());$('solemnTestBtn').addEventListener('click',async()=>{if(busy)return;busy=true;skipRequested=false;currentCards=Array.from({length:10},drawOne);currentCards[0]={rarity:'SSR',name:'ルナ【星降る夜】',quote:'……別に、嬉しくないけど'};buildSlots(10);stage.style.display='flex';stage.classList.add('revealing');grid.style.display='none';spotlight.style.display='none';skipBtn.style.display='block';log.textContent='🧪 荘厳演出テスト……';await solemnConfirm();if(skipRequested)return finishSkip();await revealComicalCards()});
 if(tenStart.parentElement!==document.body)document.body.appendChild(tenStart);buildSlots(10);grid.style.display='none';preloadChibiPoses();updateStatus();renderCollection();
 })();
 </script>
