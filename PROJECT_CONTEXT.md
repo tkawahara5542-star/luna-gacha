@@ -30,22 +30,28 @@
 ### UR × 2以上
 - チビルナ劇場プレミア 100%
 - 動画: `assets/video/chibiluna_premium_theater.mp4`
+- マジシャン版の完成動画。幻想譚前半から番組ジャックして劇場へ移行し、動画内にBGM・SEを含む。
 
 ### UR × 1
-- 幻想譚 100%
-- 動画: `assets/video/gensotan_ur1.mp4`
+- 幻想譚 50%
+- 新SSR荘厳演出 50%
+
+幻想譚動画: `assets/video/gensotan_ur1.mp4`
+- BGM: 月の小舟
+- 追加SEなし
 
 ### URなし・SSRあり
-- 50%で特別演出判定
-- 特別演出に入った場合:
-  - 50% 荘厳系
-  - 50% 既存の通常 / サプライズ側
-- 荘厳系動画: `assets/video/solemn_ssr.mp4`
+- 通常教会 50%: `assets/video/solemn_ssr.mp4`
+- 新SSR荘厳演出 50%
 
-### URなし・SSRなし
-- 既存の通常演出
+### SSR・URなし
+- 通常教会 100%: `assets/video/solemn_ssr.mp4`
 
-古い「UR×1 = 荘厳 / 劇場 50:50」は誤仕様。使用しない。
+### 新SSR荘厳演出
+- sacred 50%: `assets/video/ssr_stainedglass_sacred.mp4`
+- prayer 50%: `assets/video/ssr_stainedglass_prayer.mp4`
+
+新SSR荘厳演出はSSR以上確定演出であり、UR × 1の候補にもなる。UR × 2以上は常にチビルナ劇場プレミア。
 
 ## 4. 完成済み動画素材
 
@@ -55,6 +61,8 @@
 - `assets/video/gensotan_ur1.mp4`
 - `assets/video/chibiluna_premium_theater.mp4`
 - `assets/video/solemn_ssr.mp4`
+- `assets/video/ssr_stainedglass_sacred.mp4`
+- `assets/video/ssr_stainedglass_prayer.mp4`
 
 ## 5. 既存結果フロー
 
@@ -71,7 +79,7 @@ collectionは現行で localStorage `luna_gacha_collection_v1` を使用。
 
 ## 6. 現在の実装状況
 
-基準は v5.63 系。
+基準は v5.64 系。
 
 確認済みの主要事項:
 - `index.html` 単一HTML/CSS/JS構成
