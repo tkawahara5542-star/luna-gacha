@@ -463,6 +463,8 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 .resultCardVisual .thumbMoon{position:relative;z-index:1;font-size:clamp(22px,4.2vw,31px);line-height:1;text-shadow:0 0 15px currentColor}
 .resultCardVisual .thumbRarity{position:relative;z-index:1;margin-top:4px;font-size:clamp(7px,1.4vw,10px);font-weight:1000;letter-spacing:.1em}
 .resultCardVisual .thumbName{position:relative;z-index:1;max-width:88%;margin-top:4px;font-size:clamp(5px,1.05vw,7px);font-weight:900;line-height:1.25;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 10連結果では背後のトップ画面を見せず、カード一覧に集中させる。 */
+.resultOverlay{background:radial-gradient(circle at 50% 35%,rgba(49,47,99,.99),rgba(4,5,15,1) 72%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 </style>
 
 <!-- v5.48: obsolete aside fully retired. Puppet pose changes use one shared snap-turn routine. -->
