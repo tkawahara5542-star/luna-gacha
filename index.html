@@ -466,7 +466,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 /* 10連結果では背後のトップ画面を見せず、カード一覧に集中させる。 */
 .resultOverlay{background:radial-gradient(circle at 50% 35%,rgba(49,47,99,.99),rgba(4,5,15,1) 72%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 /* 横画面の10連グリッドだけを少し密にして、1つのカード一覧として見せる。 */
-@media(orientation:landscape){.resultOverlayList{column-gap:4px;row-gap:6px}}
+@media(orientation:landscape){.resultOverlayList{width:clamp(316px,56vw,420px);max-width:96vw;column-gap:4px;row-gap:6px}}
 </style>
 
 <!-- v5.48: obsolete aside fully retired. Puppet pose changes use one shared snap-turn routine. -->
