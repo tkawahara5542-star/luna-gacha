@@ -448,6 +448,11 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 .resultCard.revealingCard{transform:scale(1.04);filter:brightness(1.14)}
 .resultCard.revealedGridCard{animation:resultCardReveal .22s ease-out}
 @keyframes resultCardReveal{from{transform:scale(.94);filter:brightness(1.22)}to{transform:scale(1);filter:brightness(1)}}
+/* 10連グリッドだけはレアリティにかかわらず同じカード外形を使用する。 */
+@media(orientation:landscape){.resultOverlayList{grid-template-columns:repeat(5,1fr)}}
+.resultOverlayList .resultCard,.resultOverlayList .resultCard.hasCardImage{box-sizing:border-box;width:min(100%,clamp(60px,10vw,74px));min-height:0;height:auto;aspect-ratio:2/3;align-self:start;justify-self:center;padding:4px;border-radius:10px;overflow:hidden}
+.resultOverlayList .resultCard.hasCardImage{background:linear-gradient(145deg,rgba(32,38,78,.96),rgba(10,12,29,.96));border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 25px rgba(0,0,0,.25)}
+.resultOverlayList .resultCard .resultMiniArt.hasImage{width:auto;height:100%;aspect-ratio:2/3;margin:0 auto;border-radius:6px;flex:none}
 </style>
 
 <!-- v5.48: obsolete aside fully retired. Puppet pose changes use one shared snap-turn routine. -->
