@@ -162,7 +162,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 .heroContent>div:first-child{display:none}
 .heroTopResource{position:absolute;right:25%;top:18px;z-index:7;min-width:178px;padding:8px 14px;border-radius:999px;background:rgba(7,10,24,.72);border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 25px rgba(0,0,0,.25);backdrop-filter:blur(7px);color:#fff5ca;font-weight:900;font-size:13px;text-align:center}
 .heroTopResource small{font-size:9px;color:#cfd4ee;font-weight:700}
-.heroActionRow{position:absolute;left:20%;right:20%;bottom:74px;z-index:8;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.heroActionRow{position:absolute;left:20%;right:20%;bottom:18px;z-index:8;display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .heroGachaBtn{border:1px solid rgba(255,238,190,.8);border-radius:18px;padding:13px 16px;background:linear-gradient(135deg,rgba(40,82,151,.94),rgba(34,48,101,.94));color:#fff;font-weight:1000;font-size:18px;line-height:1.1;box-shadow:0 10px 28px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.18)}
 .heroGachaBtn.gold{background:linear-gradient(135deg,rgba(205,157,59,.96),rgba(113,76,22,.96));color:#fff8df}
 .heroGachaBtn small{display:block;margin-top:5px;font-size:13px}
@@ -172,7 +172,7 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 .devDock{position:absolute;left:20px;bottom:15px;z-index:10;display:flex;align-items:center;gap:7px}
 .versionCorner{font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.86);padding:6px 8px;border-radius:999px;background:rgba(4,6,18,.76);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px)}
 .devDockBtn{border:1px dashed rgba(255,231,151,.55);background:rgba(8,10,24,.78);color:#fff1b9;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;backdrop-filter:blur(6px)}
-@media(max-width:900px) and (orientation:landscape){.heroTopResource{right:18px;top:12px}.heroActionRow,.heroUtilityRow{left:18%;right:18%}.heroActionRow{bottom:68px;gap:9px}.heroGachaBtn{padding:10px 10px;font-size:14px}.heroGachaBtn small{font-size:11px}.heroUtilityBtn{font-size:9px;padding:7px 8px}.devDock{left:12px;bottom:12px}}
+@media(max-width:900px) and (orientation:landscape){.heroTopResource{right:18px;top:12px}.heroActionRow,.heroUtilityRow{left:18%;right:18%}.heroActionRow{bottom:14px;gap:9px}.heroGachaBtn{padding:10px 10px;font-size:14px}.heroGachaBtn small{font-size:11px}.heroUtilityBtn{font-size:9px;padding:7px 8px}.devDock{left:12px;bottom:12px}}
 
 /* v5.49 — LANDSCAPE FOUNDATION: horizontal is the canonical layout. Vertical remains untouched. */
 @media (orientation:landscape) and (min-width:900px){
@@ -469,6 +469,12 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
 @media(orientation:landscape){.resultOverlayList{width:clamp(316px,56vw,420px);max-width:96vw;column-gap:4px;row-gap:6px}}
 /* 演出動画と独立SEだけを個別に調整する最小設定UI。 */
 .soundSettingsGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.soundSetting{display:block;padding:10px 11px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(255,255,255,.035)}.soundSettingHead{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:900}.soundSettingValue{color:#fff2b9;font-variant-numeric:tabular-nums}.soundSetting input[type=range]{display:block;width:100%;min-height:32px;margin:5px 0 0;accent-color:#f5d98a;touch-action:pan-y}@media(max-width:560px){.soundSettingsGrid{grid-template-columns:1fr}}
+/* One-screen summon home: actions stay on the hero, while secondary controls remain compact. */
+.topUtilityBar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:8px 2px 0}.topUtilityBtn{min-width:0;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:9px 6px;background:rgba(18,22,49,.9);color:#eef0ff;font-size:10px;font-weight:900;line-height:1.25;box-shadow:0 7px 18px rgba(0,0,0,.16)}.topUtilityBtn:hover{filter:brightness(1.08)}
+.topInfoBar{display:grid;grid-template-columns:1fr 1fr 1.7fr auto;align-items:center;gap:5px;margin:6px 2px 0}.topInfoBar .pill{min-width:0;padding:6px 7px;border-radius:10px;font-size:9px;white-space:nowrap;text-align:center}.topVersion{white-space:nowrap;padding:5px 6px;font-size:8px}
+#devEffects:not([open]){display:none}#devEffects[open]{margin:8px 2px 0}#devEffects[open] summary{display:none}
+@media(max-width:560px){.heroActionRow{left:10%;right:10%;bottom:14px;gap:8px}.heroGachaBtn{padding:10px 8px;font-size:14px}.heroGachaBtn small{font-size:10px}.topUtilityBtn{padding:8px 4px;font-size:9px}.topInfoBar{grid-template-columns:1fr 1fr 1.65fr auto}.topInfoBar .pill{padding:5px 4px;font-size:8px}.topVersion{padding:4px;font-size:7px}}
+@media (orientation:landscape) and (min-width:900px){#app{display:block;max-width:1280px;padding:14px 22px 26px}.status{margin:6px 2px 0}.hero{min-height:245px;height:245px}.heroContent{min-height:245px;height:245px;padding:0}#app > .section:not(#gachaPanel){grid-area:auto;margin-top:10px}}
 </style>
 
 <!-- v5.48: obsolete aside fully retired. Puppet pose changes use one shared snap-turn routine. -->
@@ -478,29 +484,27 @@ details.dev{margin-top:10px;background:rgba(255,255,255,.035);border:1px dashed 
   <section class="hero" aria-label="開発中トップ画面 月を想う">
     <div class="heroContent">
       <div class="heroTopResource">💎 月のかけら　<b id="heroStones">3000</b><br><small>開発中・実データ連動</small></div>
-      <div class="heroUtilityRow">
-        <button id="heroCollectionBtn" class="heroUtilityBtn" type="button">📖 カード図鑑</button>
-        <button id="heroChargeBtn" class="heroUtilityBtn" type="button">✨ 無料チャージ ＋3000</button>
-      </div>
-      <div class="devDock" aria-label="開発用操作">
-        <span class="versionCorner">v5.64 • DEV</span>
-        <button id="force演出Btn" class="devDockBtn" type="button">🧪 演出テスト</button>
+      <div class="heroActionRow">
+        <button class="heroGachaBtn" id="oneBtn" type="button">1回召喚<small>💎300</small></button>
+        <button class="heroGachaBtn gold" id="tenBtn" type="button">10連召喚<small>💎3000</small></button>
       </div>
     </div>
   </section>
 
-  <div class="status">
-    <div class="pill">💎 月のかけら　<b id="stones">3000</b></div>
-    <div class="pill">🎫 召喚回数　<b id="pulls">0</b></div>
-    <div class="pill">UR <b>1%</b>　SSR <b>5%</b>　SR <b>14%</b></div>
-    <button id="freeChargeBtn" class="chargeBtn" type="button">✨ 無料チャージ<br><small>＋3000</small></button>
+  <div class="topUtilityBar" aria-label="補助操作">
+    <button id="collectionOpenBtn" class="topUtilityBtn" type="button">📖 図鑑 <span id="collectionMiniCount">0 / 22</span></button>
+    <button id="freeChargeBtn" class="topUtilityBtn" type="button">✨ 無料チャージ +3000</button>
+    <button id="force演出Btn" class="topUtilityBtn" type="button">🧪 演出テスト</button>
   </div>
 
-  <section class="section" id="gachaPanel">
-    <div class="sectionHead"><div><div class="sectionTitle">🌙 召喚する</div><div class="sectionSub">普通の日常 → 忘れられない一枚</div></div><div class="sectionSub">1回 💎300 / 10連 💎3000</div></div>
-    <div class="actions"><button class="mainBtn secondary" id="oneBtn" type="button">1回召喚<br><small>💎300</small></button><button class="mainBtn" id="tenBtn" type="button">10連召喚<br><small>💎3000</small></button></div><button id="collectionOpenBtn" class="collectionOpenBtn" type="button">📖 カード図鑑　<span id="collectionMiniCount">0 / 19</span></button>
-    <details class="dev" id="devEffects"><summary>🧪 開発用・10連演出テスト</summary><div class="devGrid"><button id="gensotanTestBtn" class="devBtn" type="button">🌙 幻想譚</button><button id="solemnVideoTestBtn" class="devBtn" type="button">⛪ 通常教会</button><button id="premiumTheaterTestBtn" class="devBtn" type="button">🎭 チビルナ劇場プレミア</button><button id="normalTenTestBtn" class="devBtn" type="button">🃏 通常10連</button><button id="ssrSacredTestBtn" class="devBtn" type="button">✨ SSR荘厳A</button><button id="ssrPrayerTestBtn" class="devBtn" type="button">✨ SSR荘厳B</button></div></details>
-  </section>
+  <div class="status topInfoBar" aria-label="召喚情報">
+    <div class="pill">💎 <b id="stones">3000</b></div>
+    <div class="pill">🎫 <b id="pulls">0</b></div>
+    <div class="pill">UR <b>1%</b>　SSR <b>5%</b>　SR <b>14%</b></div>
+    <span class="versionCorner topVersion">v5.64 • DEV</span>
+  </div>
+
+  <details class="dev" id="devEffects"><summary>🧪 開発用・10連演出テスト</summary><div class="devGrid"><button id="gensotanTestBtn" class="devBtn" type="button">🌙 幻想譚</button><button id="solemnVideoTestBtn" class="devBtn" type="button">⛪ 通常教会</button><button id="premiumTheaterTestBtn" class="devBtn" type="button">🎭 チビルナ劇場プレミア</button><button id="normalTenTestBtn" class="devBtn" type="button">🃏 通常10連</button><button id="ssrSacredTestBtn" class="devBtn" type="button">✨ SSR荘厳A</button><button id="ssrPrayerTestBtn" class="devBtn" type="button">✨ SSR荘厳B</button></div></details>
 
   <section class="section" aria-label="音量設定">
     <div class="sectionHead"><div><div class="sectionTitle">🔊 音量設定</div><div class="sectionSub">演出動画と独立SEの音量を調整できます</div></div></div>
@@ -811,7 +815,7 @@ async function runDevTenTest(effect){if(busy)return;resultOverlay.classList.remo
 async function solemnConfirm(){const overlay=document.createElement('div');overlay.style.cssText='position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:radial-gradient(circle at 50% 45%,rgba(55,60,120,.3),rgba(2,3,10,.97) 70%)';overlay.innerHTML='<div style="font-size:13px;letter-spacing:.2em;color:#b9c2ea;opacity:.9">……特別な気配……</div><div style="margin-top:22px;font-size:34px;font-weight:1000;letter-spacing:.08em;text-shadow:0 0 26px rgba(220,225,255,.85)">✨ CONGRATULATIONS!! ✨</div><div style="margin-top:12px;font-size:12px;color:#dfe3ff">月が、少しだけ近い。</div>';stage.appendChild(overlay);await sleep(1600);await sleep(2500);await sleep(3900);if(skipRequested){overlay.remove();return}await sleep(2000);overlay.remove()}
 async function onePull(){if(busy||stones<300)return;busy=true;stones-=300;pulls++;updateStatus();currentCards=[drawOne()];registerCards(currentCards);buildSlots(1);stage.style.display='flex';stage.classList.add('revealing');setSlot(0,currentCards[0].rarity,false);showCard(currentCards[0],currentCards[0].rarity);log.textContent='🌙 ルナを召喚……';await sleep(currentCards[0].rarity==='UR'?1700:currentCards[0].rarity==='SSR'?1300:800);setSlot(0,currentCards[0].rarity,true);finishNormal()}
 collectionOpenBtn.addEventListener('click',openCollection);collectionBackBtn.addEventListener('click',closeCollection);collectionDetailClose.addEventListener('click',closeCollectionDetail);collectionDetail.addEventListener('click',e=>{if(e.target===collectionDetail)closeCollectionDetail()});collectionFilters.addEventListener('click',e=>{const b=e.target.closest('.collectionFilter');if(!b)return;collectionFilter=b.dataset.filter;renderCollection()});
-resultAgain.addEventListener('click',()=>{closeCollectionDetail();resultOverlay.classList.remove('show');resultOverlay.setAttribute('aria-hidden','true');tenBtn.click()});resultHome.addEventListener('click',()=>{closeCollectionDetail();resultOverlay.classList.remove('show');resultOverlay.setAttribute('aria-hidden','true');window.scrollTo({top:0,behavior:'smooth'})});oneBtn.addEventListener('click',onePull);tenBtn.addEventListener('click',tenPull);document.getElementById('heroCollectionBtn').addEventListener('click',()=>document.getElementById('collectionOpenBtn').click());document.getElementById('heroChargeBtn').addEventListener('click',()=>freeChargeBtn.click());skipBtn.addEventListener('click',()=>{if(busy)skipRequested=true});effectVolumeEl.addEventListener('input',()=>setSoundSetting('effect',effectVolumeEl.value));seVolumeEl.addEventListener('input',()=>setSoundSetting('se',seVolumeEl.value));freeChargeBtn.addEventListener('click',()=>{if(busy)return;stones+=3000;updateStatus();log.textContent='✨ 無料チャージ！月のかけら＋3000';});force演出Btn.addEventListener('click',()=>{const dev=$('devEffects');dev.open=true;dev.scrollIntoView({behavior:'smooth',block:'center'})});$('gensotanTestBtn').addEventListener('click',()=>runDevTenTest(playGensotan));$('solemnVideoTestBtn').addEventListener('click',()=>runDevTenTest(playSolemnVideo));$('premiumTheaterTestBtn').addEventListener('click',()=>runDevTenTest(playPremiumComical));$('normalTenTestBtn').addEventListener('click',()=>runDevTenTest(playSolemnVideo));$('ssrSacredTestBtn').addEventListener('click',()=>runDevTenTest(playSsrSacredVideo));$('ssrPrayerTestBtn').addEventListener('click',()=>runDevTenTest(playSsrPrayerVideo));
+resultAgain.addEventListener('click',()=>{closeCollectionDetail();resultOverlay.classList.remove('show');resultOverlay.setAttribute('aria-hidden','true');tenBtn.click()});resultHome.addEventListener('click',()=>{closeCollectionDetail();resultOverlay.classList.remove('show');resultOverlay.setAttribute('aria-hidden','true');window.scrollTo({top:0,behavior:'smooth'})});oneBtn.addEventListener('click',onePull);tenBtn.addEventListener('click',tenPull);skipBtn.addEventListener('click',()=>{if(busy)skipRequested=true});effectVolumeEl.addEventListener('input',()=>setSoundSetting('effect',effectVolumeEl.value));seVolumeEl.addEventListener('input',()=>setSoundSetting('se',seVolumeEl.value));freeChargeBtn.addEventListener('click',()=>{if(busy)return;stones+=3000;updateStatus();log.textContent='✨ 無料チャージ！月のかけら＋3000';});force演出Btn.addEventListener('click',()=>{const dev=$('devEffects');dev.open=true;dev.scrollIntoView({behavior:'smooth',block:'center'})});$('gensotanTestBtn').addEventListener('click',()=>runDevTenTest(playGensotan));$('solemnVideoTestBtn').addEventListener('click',()=>runDevTenTest(playSolemnVideo));$('premiumTheaterTestBtn').addEventListener('click',()=>runDevTenTest(playPremiumComical));$('normalTenTestBtn').addEventListener('click',()=>runDevTenTest(playSolemnVideo));$('ssrSacredTestBtn').addEventListener('click',()=>runDevTenTest(playSsrSacredVideo));$('ssrPrayerTestBtn').addEventListener('click',()=>runDevTenTest(playSsrPrayerVideo));
 if(tenStart.parentElement!==document.body)document.body.appendChild(tenStart);syncSoundSettingsUi();buildSlots(10);grid.style.display='none';preloadChibiPoses();updateStatus();renderCollection();
 })();
 </script>
